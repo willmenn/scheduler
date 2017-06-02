@@ -16,4 +16,6 @@ public class ScheduleModel {
     private String manager;
     @NonNull
     private List<Broker> brokers;
+    @NonNull
+    private List<ShiftPlace> shiftPlaces;
 }

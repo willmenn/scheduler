@@ -1,7 +1,6 @@
 package com.broker.scheduler.client;
 
-
-import com.broker.scheduler.model.Broker;
+import com.broker.scheduler.model.ShiftPlace;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +11,9 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Component
-@FeignClient(url = "${brokermanagement.url}", name = "BrokerClient")
-public interface BrokerClient {
+@FeignClient(url = "${brokermanagement.url}", name = "shiftPlaceClient")
+public interface ShifPlaceClient {
 
-    @RequestMapping(value = "/brokers/manager/{name}", method = GET)
-    List<Broker> fetchBrokersByManager(@PathVariable("name") String name);
+    @RequestMapping(value = "/shiftPlace/manager/{name}", method = GET)
+    List<ShiftPlace> fetchShiftPlaceByManager(@PathVariable("name") String name);
 }
