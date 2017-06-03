@@ -1,6 +1,7 @@
 package com.broker.scheduler.controller;
 
 import com.broker.scheduler.model.ScheduleModel;
+import com.broker.scheduler.model.WeekSchedule;
 import com.broker.scheduler.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class ScheduleController {
     @RequestMapping(method = GET)
     public ScheduleDTO fetchSchedule(@RequestParam String id) {
         ScheduleModel scheduleModel = scheduleService.fetchSchduelById(id);
-        return new ScheduleDTO(scheduleModel.getId(), scheduleModel.getManager());
+        return new ScheduleDTO(scheduleModel.getId(), scheduleModel.getManager(), scheduleModel.getWeekSchedule());
     }
 
     @RequestMapping(method = POST,
@@ -55,6 +56,7 @@ public class ScheduleController {
         private String id;
         @NotNull
         private String manager;
+        private WeekSchedule weekSchedule;
     }
 
     private class SchedulerWrapper extends ResourceSupport {
