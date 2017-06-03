@@ -184,4 +184,48 @@ public class BuildWeekScheduleTest {
                 .findFirst().get().getBrokers().size();
         assertEquals(2, tue);
     }
+
+    @Test
+    public void shouldBeAbleToCreateAScheduleGivenMOreSpotOnShiftPlaceThanBrokers() throws Exception {
+        Broker broker1 = Broker.builder()
+                .brokerId("bmon")
+                .name("bomn-name")
+                .preference(Preference.builder().weekDay("MON").build())
+                .build();
+        Broker broker11 = Broker.builder()
+                .brokerId("bmon1")
+                .name("bomn-name")
+                .preference(Preference.builder().weekDay("MON").build())
+                .build();
+        Broker broker2 = Broker.builder()
+                .brokerId("btue")
+                .name("btue-name")
+                .preference(Preference.builder().weekDay("TUE").build())
+                .build();
+        List<Broker> brokers = Arrays.asList(broker1, broker2, broker11);
+        ShiftPlace shiftPlaceMON = ShiftPlace.builder()
+                .days(Arrays.asList("MON"))
+                .places("4")
+                .managersName("MN")
+                .shiftPlaceId("SP-MON")
+                .build();
+        ShiftPlace shiftPlaceTUE = ShiftPlace.builder()
+                .days(Arrays.asList("TUE"))
+                .places("2")
+                .managersName("MN1")
+                .shiftPlaceId("SP-TUE")
+                .build();
+        List<ShiftPlace> shiftPlaces = Arrays.asList(shiftPlaceMON, shiftPlaceTUE);
+
+        WeekSchedule weekSchedule = buildWeekSchedule.buildDaySchedule(brokers, shiftPlaces);
+        int mon = weekSchedule.getDayScheduleList().stream()
+                .filter(daySchedule -> daySchedule.getDay().equals("MON"))
+                .findFirst().get().getBrokers().size();
+        assertEquals(3, mon);
+
+        int tue = weekSchedule.getDayScheduleList().stream()
+                .filter(daySchedule -> daySchedule.getDay().equals("TUE"))
+                .findFirst().get().getBrokers().size();
+        assertEquals(2, tue);
+    }
 }
