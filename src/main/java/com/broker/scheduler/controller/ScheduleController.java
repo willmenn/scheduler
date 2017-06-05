@@ -26,7 +26,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/schedule")
+
 public class ScheduleController {
 
     private ScheduleService scheduleService;
@@ -36,18 +36,18 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, value = "/schedule")
     public ScheduleDTO fetchSchedule(@RequestParam String id) {
         ScheduleModel scheduleModel = scheduleService.fetchSchduelById(id);
         return new ScheduleDTO(scheduleModel.getId(), scheduleModel.getManager(), scheduleModel.getWeekSchedule());
     }
 
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, value = "/schedule/broker")
     public Map<String, List<String>> fetchSchedule(@RequestParam String id, @RequestParam String manager) {
         return scheduleService.fetchScheduleByBroker(id, manager);
     }
 
-    @RequestMapping(method = POST,
+    @RequestMapping(method = POST,value = "/schedule",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public SchedulerWrapper createSchedule(@RequestBody @Valid ScheduleDTO dto) {
