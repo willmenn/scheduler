@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -38,6 +40,11 @@ public class ScheduleController {
     public ScheduleDTO fetchSchedule(@RequestParam String id) {
         ScheduleModel scheduleModel = scheduleService.fetchSchduelById(id);
         return new ScheduleDTO(scheduleModel.getId(), scheduleModel.getManager(), scheduleModel.getWeekSchedule());
+    }
+
+    @RequestMapping(method = GET)
+    public Map<String, List<String>> fetchSchedule(@RequestParam String id, @RequestParam String manager) {
+        return scheduleService.fetchScheduleByBroker(id, manager);
     }
 
     @RequestMapping(method = POST,

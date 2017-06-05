@@ -33,8 +33,8 @@ public class FulfillTheWholesOfWeekSchedule {
 
                     int places = Integer.parseInt(shiftPlace1.getPlaces());
                     int missingPlaces = places - daySchedule.getBrokers().size();
-                    int numberOfmissingBrokers = missingPlaces < brokerList.size() ? missingPlaces : brokerList.size();
-                    for (int i = 0; i < numberOfmissingBrokers; i++) {
+                    int numberOfMissingBrokers = missingPlaces < brokerList.size() ? missingPlaces : brokerList.size();
+                    for (int i = 0; i < numberOfMissingBrokers; i++) {
                         daySchedule.getBrokers().add(brokerList.get(i));
                     }
                 });

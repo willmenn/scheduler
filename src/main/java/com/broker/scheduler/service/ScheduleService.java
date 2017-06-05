@@ -11,7 +11,11 @@ import com.broker.scheduler.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @Service
 public class ScheduleService {
@@ -51,6 +55,21 @@ public class ScheduleService {
         return repository.findOne(id);
     }
 
+    public Map<String, List<String>> fetchScheduleByBroker(String id, String manager) {
+        List<Broker> brokers = brokerClient.fetchBrokersByManager(manager);
+        ScheduleModel one = repository.findOne(id);
+        Map<String, List<String>> map = new HashMap<>();
+        brokers.forEach(broker -> {
+            List<String> days = newArrayList();
+            one.getWeekSchedule().getDayScheduleList().forEach(daySchedule -> {
+                if (daySchedule.getBrokers().contains(broker)) {
+                    days.add(daySchedule.getDay());
+                }
+            });
+            map.put(broker.getName(), days);
+        });
+        return map;
+    }
     /*
     Cria um mapa por <Dia, list<Broker>> por preferencia.
     Cria um mapa por <Dia, list<ShiftPlace>>.
