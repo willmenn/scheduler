@@ -2,7 +2,6 @@ package com.broker.scheduler.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,7 +10,6 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Getter
 @Builder
-@EqualsAndHashCode
 public class Broker {
     @NonNull
     private String brokerId;
@@ -19,4 +17,19 @@ public class Broker {
     private String name;
     @NonNull
     private Preference preference;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Broker broker = (Broker) o;
+
+        return name != null ? name.equals(broker.name) : broker.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }
