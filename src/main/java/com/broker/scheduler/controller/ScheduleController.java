@@ -58,12 +58,14 @@ public class ScheduleController {
         return json;
     }
 
-    @RequestMapping(method = POST,value = "/schedule",
+    @RequestMapping(method = POST, value = "/schedule",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public SchedulerWrapper createSchedule(@RequestBody @Valid ScheduleDTO dto) {
         ScheduleModel schedule = scheduleService.createSchedule(dto);
-        return new SchedulerWrapper().build(schedule.getId());
+        SchedulerWrapper build = new SchedulerWrapper().build(schedule.getId());
+        build.setScheduleId(schedule.getId());
+        return build;
     }
 
     @NoArgsConstructor
@@ -77,7 +79,11 @@ public class ScheduleController {
         private WeekSchedule weekSchedule;
     }
 
+    @Setter
+    @Getter
     private class SchedulerWrapper extends ResourceSupport {
+        private String scheduleId;
+
         public SchedulerWrapper build(String id) {
             SchedulerWrapper schedulerWrapper = new SchedulerWrapper();
             schedulerWrapper.add(linkTo(methodOn(ScheduleController.class).fetchSchedule(id)).withSelfRel());
