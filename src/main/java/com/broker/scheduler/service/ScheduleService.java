@@ -62,7 +62,7 @@ public class ScheduleService {
         brokers.forEach(broker -> {
             List<String> days = newArrayList();
             one.getWeekSchedule().getDayScheduleList().forEach(daySchedule -> {
-                if (daySchedule.getBrokers().contains(broker)) {
+                if (daySchedule.getBrokers() != null && daySchedule.getBrokers().contains(broker)) {
                     days.add(daySchedule.getDay());
                 }
             });
