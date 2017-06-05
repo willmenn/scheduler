@@ -3,6 +3,8 @@ package com.broker.scheduler.controller;
 import com.broker.scheduler.model.ScheduleModel;
 import com.broker.scheduler.model.WeekSchedule;
 import com.broker.scheduler.service.ScheduleService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,8 +45,17 @@ public class ScheduleController {
     }
 
     @RequestMapping(method = GET, value = "/schedule/broker")
-    public Map<String, List<String>> fetchSchedule(@RequestParam String id, @RequestParam String manager) {
-        return scheduleService.fetchScheduleByBroker(id, manager);
+    public String fetchSchedule(@RequestParam String id, @RequestParam String manager) {
+        Map<String, List<String>> map = scheduleService.fetchScheduleByBroker(id, manager);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return json;
     }
 
     @RequestMapping(method = POST,value = "/schedule",
