@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 public class BuildMultiSchedule {
@@ -46,11 +47,21 @@ public class BuildMultiSchedule {
                 }
             });
 
-            return plantao.toBuilder().scheduled(scheduled).build();
+            return plantao.toBuilder().scheduled(filScheduleWithEmptyDays(scheduled)).build();
 
         }).collect(toList());
 
         return plantoesComPreferencia;
+    }
+
+    private Map<String, List<Broker>> filScheduleWithEmptyDays(Map<String, List<Broker>> scheduled) {
+        List<String> days = asList("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT");
+
+        days.stream()
+                .filter(day -> scheduled.get(day) == null)
+                .forEach(day -> scheduled.put(day, newArrayList()));
+
+        return scheduled;
     }
 
     private List<Broker> scheduleBroker(String day, Integer positions, List<Broker> brokersList) {

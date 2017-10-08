@@ -34,7 +34,7 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
 
         assertEquals(1,schedule.size()); //Only one shift place
-        assertEquals(1,schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7,schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(1,schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker
         assertEquals(broker,schedule.get(0).getScheduled().get("SUN").get(0)); //Only has ONE Broker
     }
@@ -57,7 +57,7 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
 
         assertEquals(1, schedule.size()); //Only one shift place
-        assertEquals(1, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(1, schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker
         assertEquals(broker, schedule.get(0).getScheduled().get("SUN").get(0)); //Only has ONE Broker
     }
@@ -82,7 +82,7 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
 
         assertEquals(1, schedule.size()); //Only one shift place
-        assertEquals(1, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(1, schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker
         assertEquals(broker, schedule.get(0).getScheduled().get("SUN").get(0)); //Only has ONE Broker
     }
@@ -108,7 +108,7 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
 
         assertEquals(1, schedule.size()); //Only one shift place
-        assertEquals(2, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(1, schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker on SUN
         assertEquals(brokerSUN, schedule.get(0).getScheduled().get("SUN").get(0)); //Only has ONE Broker
         assertEquals(1, schedule.get(0).getScheduled().get("MON").size()); //Only has ONE Broker on MON
@@ -137,7 +137,7 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
 
         assertEquals(1, schedule.size()); //Only one shift place
-        assertEquals(2, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(2, schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker on SUN
         assertEquals(brokerSUN1, schedule.get(0).getScheduled().get("SUN").get(0)); //Should be brokerSUN1
         assertEquals(brokerSUN2, schedule.get(0).getScheduled().get("SUN").get(1)); //Should be brokerSUN2
@@ -162,10 +162,10 @@ public class BuildMultiScheduleTest {
         List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao1,plantao2), brokers);
 
         assertEquals(2, schedule.size()); //Only one shift place
-        assertEquals(1, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
+        assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
         assertEquals(1, schedule.get(0).getScheduled().get("SUN").size()); //Only has ONE Broker on SUN
         assertEquals(brokerSUN1, schedule.get(0).getScheduled().get("SUN").get(0)); //Should be brokerSUN1
-        assertEquals(0, schedule.get(1).getScheduled().keySet().size()); //Could not schedule given no broker available
+        assertEquals(7, schedule.get(1).getScheduled().keySet().size()); //Could not schedule given no broker available
     }
 
     private Broker buildBroker(String name, String preferenceDay) {
