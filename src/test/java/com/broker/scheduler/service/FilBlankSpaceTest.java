@@ -22,7 +22,7 @@ public class FilBlankSpaceTest {
 
 
     @Test
-    public void shouldFilBlankSpaceForSUNForOneBrokerWithNoPreferences() throws Exception {
+    public void shouldFilBlankSpaceForSUNForOneBrokerWithNoScheduled() throws Exception {
         //Given
         //Given SUN with one position With none brokers scheduled
         Map<String, Integer> days = newHashMap();
@@ -42,7 +42,153 @@ public class FilBlankSpaceTest {
         FilBlankSpace filBlankSpace = new FilBlankSpace();
         List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 buildEmptyAlreadyScheduled(), brokers);
-        assertEquals(plantaos.get(0).getScheduled().size(), 1);
+
+        assertEquals(1, plantaos.get(0).getScheduled().size());
+    }
+
+    @Test
+    public void shouldFilBlankSpaceForSUNForOneBrokerWithAlreadyOneBroker() throws Exception {
+        //Given
+        //Given Two Brokers with MON And SUN as preference day
+        List<Broker> brokers = newArrayList();
+        Broker broker1 = buildBroker("William", "MON");
+        brokers.add(broker1);
+        Broker broker2 = buildBroker("Ruth", "SUN");
+        brokers.add(broker2);
+
+        //Given SUN with one position With none brokers scheduled
+        Map<String, Integer> days = newHashMap();
+        days.put("SUN", 2);
+        Map<String, List<Broker>> scheduled = newHashMap();
+        scheduled.put("SUN", newArrayList(broker2));
+        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+                .days(days)
+                .scheduled(scheduled).build();
+        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+
+        //Given broker2 is alreadyScheduled
+        Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
+        alreadyScheduled.put("SUN", newArrayList(broker2));
+
+        FilBlankSpace filBlankSpace = new FilBlankSpace();
+        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+                alreadyScheduled, brokers);
+
+        assertEquals(1, plantaos.get(0).getScheduled().size());
+        assertEquals(2, plantaos.get(0).getScheduled().get("SUN").size());
+    }
+
+    @Test
+    public void shouldFilBlankSpaceForSUNForOneBrokerWithAlreadyOneBrokerAnd2BrokersAvailable() throws Exception {
+        //Given
+        //Given Two Brokers with MON And SUN as preference day
+        List<Broker> brokers = newArrayList();
+        Broker broker1 = buildBroker("William", "MON");
+        brokers.add(broker1);
+        Broker broker2 = buildBroker("Ruth", "SUN");
+        brokers.add(broker2);
+        Broker broker3 = buildBroker("Rafael", "TUE");
+        brokers.add(broker3);
+
+        //Given SUN with one position With none brokers scheduled
+        Map<String, Integer> days = newHashMap();
+        days.put("SUN", 2);
+        Map<String, List<Broker>> scheduled = newHashMap();
+        scheduled.put("SUN", newArrayList(broker2));
+        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+                .days(days)
+                .scheduled(scheduled).build();
+        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+
+        //Given broker2 is alreadyScheduled
+        Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
+        alreadyScheduled.put("SUN", newArrayList(broker2));
+
+        FilBlankSpace filBlankSpace = new FilBlankSpace();
+        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+                alreadyScheduled, brokers);
+
+        assertEquals(1, plantaos.get(0).getScheduled().size());
+        assertEquals(2, plantaos.get(0).getScheduled().get("SUN").size());
+    }
+
+    @Test
+    public void shouldFilBlankSpaceForSUNForOneBrokerWithAlreadyOneBrokerAnd2BrokersAvailableWithTwodays() throws Exception {
+        //Given
+        //Given Two Brokers with MON And SUN as preference day
+        List<Broker> brokers = newArrayList();
+        Broker broker1 = buildBroker("William", "MON");
+        brokers.add(broker1);
+        Broker broker2 = buildBroker("Ruth", "SUN");
+        brokers.add(broker2);
+        Broker broker3 = buildBroker("Rafael", "TUE");
+        brokers.add(broker3);
+
+        //Given SUN with one position With none brokers scheduled
+        Map<String, Integer> days = newHashMap();
+        days.put("SUN", 2);
+        days.put("MON", 2);
+        Map<String, List<Broker>> scheduled = newHashMap();
+        scheduled.put("SUN", newArrayList(broker2));
+        scheduled.put("MON", newArrayList());
+        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+                .days(days)
+                .scheduled(scheduled).build();
+        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+
+        //Given broker2 is alreadyScheduled
+        Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
+        alreadyScheduled.put("SUN", newArrayList(broker2));
+
+        FilBlankSpace filBlankSpace = new FilBlankSpace();
+        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+                alreadyScheduled, brokers);
+
+        assertEquals(2, plantaos.get(0).getScheduled().size());
+        assertEquals(2, plantaos.get(0).getScheduled().get("SUN").size());
+        assertEquals(2, plantaos.get(0).getScheduled().get("MON").size());
+    }
+
+    @Test
+    public void shouldFilBlankSpaceForSUNForOneBrokerWithAlreadyOneBrokerAnd2BrokersAvailableWithTwoShiftPlaceWithSameDay() throws Exception {
+        //Given
+        //Given Two Brokers with MON And SUN as preference day
+        List<Broker> brokers = newArrayList();
+        Broker broker1 = buildBroker("William", "MON");
+        brokers.add(broker1);
+        Broker broker2 = buildBroker("Ruth", "SUN");
+        brokers.add(broker2);
+        Broker broker3 = buildBroker("Rafael", "TUE");
+        brokers.add(broker3);
+
+        //Given SUN with one position With none brokers scheduled
+        Map<String, Integer> days = newHashMap();
+        days.put("SUN", 2);
+        Map<String, List<Broker>> scheduled = newHashMap();
+        scheduled.put("SUN", newArrayList(broker2));
+        BuildMultiSchedule.Plantao plantao1 = BuildMultiSchedule.Plantao.builder()
+                .days(days)
+                .scheduled(scheduled).build();
+
+        Map<String, List<Broker>> scheduled2 = newHashMap();
+        scheduled2.put("SUN", newArrayList());
+        BuildMultiSchedule.Plantao plantao2 = BuildMultiSchedule.Plantao.builder()
+                .days(days)
+                .scheduled(scheduled2).build();
+        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao1,plantao2);
+
+        //Given broker2 is alreadyScheduled
+        Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
+        alreadyScheduled.put("SUN", newArrayList(broker2));
+
+        FilBlankSpace filBlankSpace = new FilBlankSpace();
+        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+                alreadyScheduled, brokers);
+
+        assertEquals(1, plantaos.get(0).getScheduled().size());
+        assertEquals(2, plantaos.get(0).getScheduled().get("SUN").size());
+        assertEquals(1, plantaos.get(1).getScheduled().size());
+        assertEquals(1, plantaos.get(1).getScheduled().get("SUN").size());
     }
 
     private Map<String, List<Broker>> buildEmptyAlreadyScheduled() {

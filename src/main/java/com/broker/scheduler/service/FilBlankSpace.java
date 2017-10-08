@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class FilBlankSpace {
 
+    //Precondiction the Plantao Scheduled must have all days already with empty Arays.
     public List<Plantao> toFilBlankSpace(List<Plantao> plantoes, Map<String, List<Broker>> alreadyScheduled,
                                          List<Broker> brokers) {
 
@@ -25,14 +26,18 @@ public class FilBlankSpace {
                     .forEach(day -> {
                         List<Broker> brokersNotScheduled = onlyBrokersNotScheduledForThisDay(day,
                                 brokers, alreadyScheduled);
-                        List<Broker> brokerAdded = newArrayList();
-                        for (int i = 0; i < plantao.getDays().get(day); i++) {
+                        List<Broker> brokersAdded = newArrayList();
+
+                        int positionsLeft = plantao.getDays().get(day) - plantao.getScheduled().get(day).size();
+
+                        for (int i = 0; i < positionsLeft; i++) {
                             if (brokersNotScheduled.size() > i) {
                                 plantao.getScheduled().get(day).add(brokersNotScheduled.get(i));
-                                brokerAdded.add(brokersNotScheduled.get(i));
+                                brokersAdded.add(brokersNotScheduled.get(i));
                             }
                         }
-                        alreadyScheduled.get(day).addAll(brokerAdded);
+
+                        alreadyScheduled.get(day).addAll(brokersAdded);
                     });
         });
 
