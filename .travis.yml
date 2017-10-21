@@ -5,3 +5,7 @@ deploy:
   app: broker-scheduler
   api_key:
     secure: sCQswcEDjMCLrFt64mHGppMIEq43XVSOedouFWDxAAYFNdqAj0WLjmp+6SoPqiREhIaV8gIlmpnkUwbzKv/Pc3wGHXpFvk/KmxnY3/teYwUChUNX9+9DmOHKHLPN0mgD/CtHkpQGnqizGwO9Cf6VW9irrFgF0KtHF+cGkk/y+zWCd4EJ7QSRhw1nQtak31nfs3ilFsuKDC2b8l3Y/bLudLBtfthpWJW7RMll8GOlg+cd8KTQlu5WRxHKTUxJ0KLO+HtPB+C6MwOh422P/KPCHtl2LKBPGENUaiAI5e7jvFer1RaRLpBFpsob2/7gGXOvtWIcsV1zzk3hLrlCfhfcigXqaQzk8ixNvK47OLxilYLGuxJ1qnacw8bJo7XSCT6kw9Q+AqTxIZOlWq7J37rJDrndjd8iqAJ4A2/PFDwCxnwPWTIpAvAgmrKRz+D6QUATK0Zr3QtBjYKJ9w2N5lG9MGWIeKsRpLDyWq8aT4IM9FAOTj8dBiDKsdbN39laD90BFMSU2p/3cmDmSKi63j81amNiiLlqogixmmimxyVGBXgpGsaH8fH9R152aHPs/8dnQyZPIxfFs5swfAU5nj5hDpWKKlLMWPFqtMm2BJRPeQCErBzdOnMY+2x2sLknINBNuGU25cfsMkhjrmHMmME4WOp38fbCebPG/RlawoiTTrI=
+notifications:
+  webhooks:
+    urls:
+      - http://broker-regression-test/notification
