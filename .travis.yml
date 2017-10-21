@@ -8,4 +8,4 @@ deploy:
 notifications:
   webhooks:
     urls:
-      - http://broker-regression-test/notification
+      - http://broker-regression-test.herokuapp.com/notification
