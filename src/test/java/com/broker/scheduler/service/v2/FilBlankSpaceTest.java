@@ -1,7 +1,9 @@
-package com.broker.scheduler.service;
+package com.broker.scheduler.service.v2;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.model.Preference;
+import com.broker.scheduler.service.v2.BuildMultiSchedule;
+import com.broker.scheduler.service.v2.FilBlankSpace;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Test;
