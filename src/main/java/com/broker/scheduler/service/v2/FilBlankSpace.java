@@ -1,7 +1,7 @@
 package com.broker.scheduler.service.v2;
 
 import com.broker.scheduler.model.Broker;
-import com.broker.scheduler.service.v2.BuildMultiSchedule.Plantao;
+import com.broker.scheduler.service.v2.model.Plantao;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

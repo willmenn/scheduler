@@ -2,8 +2,7 @@ package com.broker.scheduler.service.v2;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.model.Preference;
-import com.broker.scheduler.service.v2.BuildMultiSchedule;
-import com.broker.scheduler.service.v2.FilBlankSpace;
+import com.broker.scheduler.service.v2.model.Plantao;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Test;
@@ -31,10 +30,10 @@ public class FilBlankSpaceTest {
         days.put("SUN", 1);
         Map<String, List<Broker>> scheduled = newHashMap();
         scheduled.put("SUN", newArrayList());
-        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled).build();
-        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+        ArrayList<Plantao> plantoes = newArrayList(plantao);
 
         //Given One Broker with MON as preference day
         List<Broker> brokers = newArrayList();
@@ -42,7 +41,7 @@ public class FilBlankSpaceTest {
         brokers.add(broker);
 
         FilBlankSpace filBlankSpace = new FilBlankSpace();
-        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+        List<Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 buildEmptyAlreadyScheduled(), brokers);
 
         assertEquals(1, plantaos.get(0).getScheduled().size());
@@ -63,17 +62,17 @@ public class FilBlankSpaceTest {
         days.put("SUN", 2);
         Map<String, List<Broker>> scheduled = newHashMap();
         scheduled.put("SUN", newArrayList(broker2));
-        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled).build();
-        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+        ArrayList<Plantao> plantoes = newArrayList(plantao);
 
         //Given broker2 is alreadyScheduled
         Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
         alreadyScheduled.put("SUN", newArrayList(broker2));
 
         FilBlankSpace filBlankSpace = new FilBlankSpace();
-        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+        List<Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 alreadyScheduled, brokers);
 
         assertEquals(1, plantaos.get(0).getScheduled().size());
@@ -97,17 +96,17 @@ public class FilBlankSpaceTest {
         days.put("SUN", 2);
         Map<String, List<Broker>> scheduled = newHashMap();
         scheduled.put("SUN", newArrayList(broker2));
-        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled).build();
-        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+        ArrayList<Plantao> plantoes = newArrayList(plantao);
 
         //Given broker2 is alreadyScheduled
         Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
         alreadyScheduled.put("SUN", newArrayList(broker2));
 
         FilBlankSpace filBlankSpace = new FilBlankSpace();
-        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+        List<Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 alreadyScheduled, brokers);
 
         assertEquals(1, plantaos.get(0).getScheduled().size());
@@ -133,17 +132,17 @@ public class FilBlankSpaceTest {
         Map<String, List<Broker>> scheduled = newHashMap();
         scheduled.put("SUN", newArrayList(broker2));
         scheduled.put("MON", newArrayList());
-        BuildMultiSchedule.Plantao plantao = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled).build();
-        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao);
+        ArrayList<Plantao> plantoes = newArrayList(plantao);
 
         //Given broker2 is alreadyScheduled
         Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
         alreadyScheduled.put("SUN", newArrayList(broker2));
 
         FilBlankSpace filBlankSpace = new FilBlankSpace();
-        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+        List<Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 alreadyScheduled, brokers);
 
         assertEquals(2, plantaos.get(0).getScheduled().size());
@@ -168,23 +167,23 @@ public class FilBlankSpaceTest {
         days.put("SUN", 2);
         Map<String, List<Broker>> scheduled = newHashMap();
         scheduled.put("SUN", newArrayList(broker2));
-        BuildMultiSchedule.Plantao plantao1 = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao1 = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled).build();
 
         Map<String, List<Broker>> scheduled2 = newHashMap();
         scheduled2.put("SUN", newArrayList());
-        BuildMultiSchedule.Plantao plantao2 = BuildMultiSchedule.Plantao.builder()
+        Plantao plantao2 = Plantao.builder()
                 .days(days)
                 .scheduled(scheduled2).build();
-        ArrayList<BuildMultiSchedule.Plantao> plantoes = newArrayList(plantao1,plantao2);
+        ArrayList<Plantao> plantoes = newArrayList(plantao1,plantao2);
 
         //Given broker2 is alreadyScheduled
         Map<String, List<Broker>> alreadyScheduled = buildEmptyAlreadyScheduled();
         alreadyScheduled.put("SUN", newArrayList(broker2));
 
         FilBlankSpace filBlankSpace = new FilBlankSpace();
-        List<BuildMultiSchedule.Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
+        List<Plantao> plantaos = filBlankSpace.toFilBlankSpace(plantoes,
                 alreadyScheduled, brokers);
 
         assertEquals(1, plantaos.get(0).getScheduled().size());

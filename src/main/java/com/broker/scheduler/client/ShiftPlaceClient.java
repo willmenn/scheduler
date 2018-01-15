@@ -1,7 +1,7 @@
 package com.broker.scheduler.client;
 
 import com.broker.scheduler.model.ShiftPlace;
-import com.broker.scheduler.service.v2.BuildMultiSchedule.Plantao;
+import com.broker.scheduler.service.v2.model.Plantao;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;

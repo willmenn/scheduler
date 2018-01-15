@@ -2,14 +2,13 @@ package com.broker.scheduler.service.v2;
 
 
 import com.broker.scheduler.model.Broker;
+import com.broker.scheduler.service.v2.model.Plantao;
 import com.google.common.collect.Maps;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -106,18 +105,7 @@ public class BuildMultiSchedule {
         alreadyScheduled.put("SAT", newArrayList());
     }
 
-    @Data
-    @Builder(toBuilder = true)
-    @ToString
-    public static class Plantao {
-        @NotNull
-        Map<String, Integer> days;
-        Map<String, List<Broker>> scheduled;
-        @NotBlank
-        String shiftPlaceId;
-        @NotBlank
-        String managersName;
-    }
+
 
     @Data
     @Builder(toBuilder = true)

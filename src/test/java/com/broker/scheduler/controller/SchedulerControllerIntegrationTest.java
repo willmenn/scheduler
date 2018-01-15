@@ -3,7 +3,7 @@ package com.broker.scheduler.controller;
 import by.stub.client.StubbyClient;
 import com.broker.scheduler.BrokerSchedulerApplicationTests;
 import com.broker.scheduler.controller.v2.ScheduleControllerV2;
-import com.broker.scheduler.service.v2.BuildMultiSchedule.Plantao;
+import com.broker.scheduler.service.v2.model.Plantao;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
