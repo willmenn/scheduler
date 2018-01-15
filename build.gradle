@@ -41,6 +41,8 @@ dependencies {
     compile('de.codecentric:spring-boot-admin-starter-client:1.5.5')
     compileOnly('org.projectlombok:lombok')
 
+    testCompile ('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.5')
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('by.stub:stubby4j:3.3.0')
 
