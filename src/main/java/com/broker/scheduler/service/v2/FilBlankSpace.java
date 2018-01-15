@@ -20,28 +20,30 @@ public class FilBlankSpace {
     public List<Plantao> toFilBlankSpace(List<Plantao> plantoes, Map<String, List<Broker>> alreadyScheduled,
                                          List<Broker> brokers) {
 
-        plantoes.forEach(plantao -> {
-            plantao.getScheduled().keySet().stream()
-                    .filter(day -> plantao.getScheduled().get(day).size() < plantao.getDays().get(day))
-                    .forEach(day -> {
-                        List<Broker> brokersNotScheduled = onlyBrokersNotScheduledForThisDay(day,
-                                brokers, alreadyScheduled);
-                        List<Broker> brokersAdded = newArrayList();
+        plantoes.forEach(plantao -> plantao.getScheduled().keySet().stream()
+                .filter(day -> plantao.getScheduled().get(day).size() < plantao.getDays().get(day))
+                .forEach(day -> {
+                    List<Broker> brokersNotScheduled = onlyBrokersNotScheduledForThisDay(day,
+                            brokers, alreadyScheduled);
+                    List<Broker> brokersAdded = newArrayList();
 
-                        int positionsLeft = plantao.getDays().get(day) - plantao.getScheduled().get(day).size();
+                    int positionsLeft = calculatePositionsLeft(plantao, day);
 
-                        for (int i = 0; i < positionsLeft; i++) {
-                            if (brokersNotScheduled.size() > i) {
-                                plantao.getScheduled().get(day).add(brokersNotScheduled.get(i));
-                                brokersAdded.add(brokersNotScheduled.get(i));
-                            }
+                    for (int i = 0; i < positionsLeft; i++) {
+                        if (brokersNotScheduled.size() > i) {
+                            plantao.getScheduled().get(day).add(brokersNotScheduled.get(i));
+                            brokersAdded.add(brokersNotScheduled.get(i));
                         }
+                    }
 
-                        alreadyScheduled.get(day).addAll(brokersAdded);
-                    });
-        });
+                    alreadyScheduled.get(day).addAll(brokersAdded);
+                }));
 
         return plantoes;
+    }
+
+    private int calculatePositionsLeft(Plantao plantao, String day) {
+        return plantao.getDays().get(day) - plantao.getScheduled().get(day).size();
     }
 
     private List<Broker> onlyBrokersNotScheduledForThisDay(String day, List<Broker> brokers,

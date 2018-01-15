@@ -20,13 +20,7 @@ public class BuildMultiSchedule {
     private static final Map<String, List<Broker>> alreadyScheduled = Maps.newHashMap();
 
     public BuildMultiSchedule() {
-        alreadyScheduled.put("SUN", newArrayList());
-        alreadyScheduled.put("MON", newArrayList());
-        alreadyScheduled.put("TUE", newArrayList());
-        alreadyScheduled.put("WED", newArrayList());
-        alreadyScheduled.put("THU", newArrayList());
-        alreadyScheduled.put("FRI", newArrayList());
-        alreadyScheduled.put("SAT", newArrayList());
+        buildEmptyScheduleMap();
     }
 
     public List<Plantao> build(List<Plantao> plantoes, List<Broker> brokers) {
@@ -79,7 +73,8 @@ public class BuildMultiSchedule {
         return brokersList != null && brokersList.size() > i;
     }
 
-    private void addAlreadyScheduledDay(Map<String, List<Broker>> alreadyScheduled, List<Broker> brokerForDay, String day) {
+    private void addAlreadyScheduledDay(Map<String, List<Broker>> alreadyScheduled, List<Broker> brokerForDay,
+                                        String day) {
         alreadyScheduled.get(day).addAll(brokerForDay);
     }
 
@@ -91,6 +86,16 @@ public class BuildMultiSchedule {
         return brokers.stream()
                 .collect(Collectors
                         .groupingBy(brokerMap -> brokerMap.getPreference().getWeekDay()));
+    }
+
+    private void buildEmptyScheduleMap() {
+        alreadyScheduled.put("SUN", newArrayList());
+        alreadyScheduled.put("MON", newArrayList());
+        alreadyScheduled.put("TUE", newArrayList());
+        alreadyScheduled.put("WED", newArrayList());
+        alreadyScheduled.put("THU", newArrayList());
+        alreadyScheduled.put("FRI", newArrayList());
+        alreadyScheduled.put("SAT", newArrayList());
     }
 
     @Data
