@@ -1,0 +1,17 @@
+-  request:
+      url: /brokers/manager/v2/MTest
+      method: GET
+   response:
+   -  status: 200
+      headers:
+        content-type: application/json
+      file: stubs/brokerList.json
+
+-  request:
+      url: /shiftPlace/manager/v2/MTest
+      method: GET
+   response:
+   -  status: 200
+      headers:
+        content-type: application/json
+      file: stubs/plantaoList.json

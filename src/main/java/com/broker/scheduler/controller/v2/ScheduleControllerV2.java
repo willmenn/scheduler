@@ -22,6 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by wahrons on 15/01/18.
  */
 @RestController
+@RequestMapping(value = "/v2")
 public class ScheduleControllerV2 {
 
     private ScheduleBrokerServiceV2 serviceV2;
@@ -42,7 +43,7 @@ public class ScheduleControllerV2 {
     @AllArgsConstructor
     @Getter
     @Setter
-    static class ScheduleV2DTO {
+    public static class ScheduleV2DTO {
         @NotBlank
         private String manager;
     }

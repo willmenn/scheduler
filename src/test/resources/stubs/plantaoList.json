@@ -1,0 +1,41 @@
+[
+  {
+    "days": {
+      "SUN": 0,
+      "MON": 2,
+      "TUE": 3,
+      "WED": 0,
+      "THU": 0,
+      "FRI": 0,
+      "SAT": 0
+    },
+    "shiftPlaceId": "5917b6348d8b0061117d01ed",
+    "managersName": "MTest"
+  },
+  {
+    "days": {
+      "SUN": 2,
+      "MON": 0,
+      "TUE": 3,
+      "WED": 0,
+      "THU": 0,
+      "FRI": 2,
+      "SAT": 0
+    },
+    "shiftPlaceId": "5917b6348d8b0061117d01el",
+    "managersName": "MTest"
+  },
+  {
+    "days": {
+      "SUN": 0,
+      "MON": 2,
+      "TUE": 3,
+      "WED": 4,
+      "THU": 0,
+      "FRI": 2,
+      "SAT": 0
+    },
+    "shiftPlaceId": "5917b6348d8b0061117d01e3",
+    "managersName": "MTest"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "brokerId": "5917b61e8d8b0061117d0aee",
+    "name": "william4",
+    "manager": "MTest",
+    "preference" : {
+      "weekDay" : "TUE",
+      "shift" : "noite"
+    }
+  },
+  {
+    "brokerId": "5917b6348d8b0061117d01ef",
+    "name": "william5",
+    "manager": "MTest",
+    "preference" : {
+      "weekDay" : "FRI",
+      "shift" : "noite"
+    }
+  },
+  {
+    "brokerId": "5917b6348d8b0061117d01ew",
+    "name": "william6",
+    "manager": "MTest",
+    "preference" : {
+      "weekDay" : "SAT",
+      "shift" : "noite"
+    }
+  },
+  {
+    "brokerId": "5917b6348d8b0061117d01e1",
+    "name": "william7",
+    "manager": "MTest",
+    "preference" : {
+      "weekDay" : "THU",
+      "shift" : "noite"
+    }
+  }
+]

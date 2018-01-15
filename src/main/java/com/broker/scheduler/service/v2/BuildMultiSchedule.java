@@ -117,8 +117,6 @@ public class BuildMultiSchedule {
         String shiftPlaceId;
         @NotBlank
         String managersName;
-        @NotBlank
-        String places;
     }
 
     @Data
