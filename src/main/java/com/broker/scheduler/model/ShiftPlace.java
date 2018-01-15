@@ -21,4 +21,5 @@ public class ShiftPlace {
     private String places;
 
     private List<String> days;
+
 }

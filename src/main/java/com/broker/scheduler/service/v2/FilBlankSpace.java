@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v2;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.service.v2.BuildMultiSchedule.Plantao;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by wahrons on 06/10/17.
  */
+@Component
 public class FilBlankSpace {
 
     //Precondiction the Plantao Scheduled must have all days already with empty Arays.

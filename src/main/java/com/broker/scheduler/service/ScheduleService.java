@@ -1,7 +1,7 @@
 package com.broker.scheduler.service;
 
 import com.broker.scheduler.client.BrokerClient;
-import com.broker.scheduler.client.ShifPlaceClient;
+import com.broker.scheduler.client.ShiftPlaceClient;
 import com.broker.scheduler.controller.ScheduleController;
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.model.ScheduleModel;
@@ -22,23 +22,23 @@ public class ScheduleService {
 
     private ScheduleRepository repository;
     private BrokerClient brokerClient;
-    private ShifPlaceClient shifPlaceClient;
+    private ShiftPlaceClient shiftPlaceClient;
     private BuildWeekSchedule buildWeekSchedule;
 
     @Autowired
     public ScheduleService(ScheduleRepository repository,
                            BrokerClient brokerClient,
-                           ShifPlaceClient shifPlaceClient,
+                           ShiftPlaceClient shiftPlaceClient,
                            BuildWeekSchedule buildWeekSchedule) {
         this.repository = repository;
         this.brokerClient = brokerClient;
-        this.shifPlaceClient = shifPlaceClient;
+        this.shiftPlaceClient = shiftPlaceClient;
         this.buildWeekSchedule = buildWeekSchedule;
     }
 
     public ScheduleModel createSchedule(ScheduleController.ScheduleDTO dto) {
         List<Broker> brokers = brokerClient.fetchBrokersByManager(dto.getManager());
-        List<ShiftPlace> shiftPlaces = shifPlaceClient.fetchShiftPlaceByManager(dto.getManager());
+        List<ShiftPlace> shiftPlaces = shiftPlaceClient.fetchShiftPlaceByManager(dto.getManager());
 
         WeekSchedule weekSchedule = buildWeekSchedule.buildDaySchedule(brokers, shiftPlaces);
 

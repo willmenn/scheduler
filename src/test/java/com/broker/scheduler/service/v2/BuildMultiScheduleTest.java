@@ -2,7 +2,6 @@ package com.broker.scheduler.service.v2;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.model.Preference;
-import com.broker.scheduler.service.v2.BuildMultiSchedule;
 import org.junit.Test;
 
 import java.util.List;
@@ -32,7 +31,8 @@ public class BuildMultiScheduleTest {
         brokers.add(broker);
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers)
+                .getPlantaos();
 
         assertEquals(1,schedule.size()); //Only one shift place
         assertEquals(7,schedule.get(0).getScheduled().keySet().size()); //Only has SUN
@@ -55,7 +55,8 @@ public class BuildMultiScheduleTest {
         brokers.add(buildBroker("Ruth", "SUN"));
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers)
+                .getPlantaos();
 
         assertEquals(1, schedule.size()); //Only one shift place
         assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
@@ -80,7 +81,8 @@ public class BuildMultiScheduleTest {
         brokers.add(buildBroker("Ruth", "SUN"));
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers)
+                .getPlantaos();
 
         assertEquals(1, schedule.size()); //Only one shift place
         assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
@@ -106,7 +108,8 @@ public class BuildMultiScheduleTest {
         brokers.add(brokerMON);
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers)
+                .getPlantaos();
 
         assertEquals(1, schedule.size()); //Only one shift place
         assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
@@ -135,7 +138,8 @@ public class BuildMultiScheduleTest {
         brokers.add(brokerMON);
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao), brokers)
+                .getPlantaos();
 
         assertEquals(1, schedule.size()); //Only one shift place
         assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN
@@ -160,7 +164,8 @@ public class BuildMultiScheduleTest {
         brokers.add(brokerSUN1);
 
         BuildMultiSchedule buildMultiSchedule = new BuildMultiSchedule();
-        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao1,plantao2), brokers);
+        List<BuildMultiSchedule.Plantao> schedule = buildMultiSchedule.build(newArrayList(plantao1,plantao2), brokers)
+                .getPlantaos();
 
         assertEquals(2, schedule.size()); //Only one shift place
         assertEquals(7, schedule.get(0).getScheduled().keySet().size()); //Only has SUN

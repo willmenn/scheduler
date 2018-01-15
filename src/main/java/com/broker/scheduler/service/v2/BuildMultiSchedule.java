@@ -6,7 +6,10 @@ import com.google.common.collect.Maps;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +18,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
+@Component
 public class BuildMultiSchedule {
 
     private static final Map<String, List<Broker>> alreadyScheduled = Maps.newHashMap();
@@ -23,7 +27,7 @@ public class BuildMultiSchedule {
         buildEmptyScheduleMap();
     }
 
-    public List<Plantao> build(List<Plantao> plantoes, List<Broker> brokers) {
+    public ScheduleWrapper build(List<Plantao> plantoes, List<Broker> brokers) {
 
         Map<String, List<Broker>> mapFromBrokersMatchingDays = createMapFromBrokersMatchingDays(brokers);
 
@@ -45,7 +49,11 @@ public class BuildMultiSchedule {
 
         }).collect(toList());
 
-        return plantoesComPreferencia;
+        return ScheduleWrapper.builder()
+                .plantaos(plantoesComPreferencia)
+                .alreadyScheduled(alreadyScheduled)
+                .build();
+
     }
 
     private Map<String, List<Broker>> filScheduleWithEmptyDays(Map<String, List<Broker>> scheduled) {
@@ -102,7 +110,22 @@ public class BuildMultiSchedule {
     @Builder(toBuilder = true)
     @ToString
     public static class Plantao {
+        @NotNull
         Map<String, Integer> days;
         Map<String, List<Broker>> scheduled;
+        @NotBlank
+        String shiftPlaceId;
+        @NotBlank
+        String managersName;
+        @NotBlank
+        String places;
+    }
+
+    @Data
+    @Builder(toBuilder = true)
+    @ToString
+    public static class ScheduleWrapper {
+        List<Plantao> plantaos;
+        Map<String, List<Broker>> alreadyScheduled;
     }
 }
