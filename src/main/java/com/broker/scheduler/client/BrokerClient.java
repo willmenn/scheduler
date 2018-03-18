@@ -17,7 +17,4 @@ public interface BrokerClient {
 
     @RequestMapping(value = "/brokers/manager/{name}", method = GET)
     List<Broker> fetchBrokersByManager(@PathVariable("name") String name);
-
-    @RequestMapping(value = "/brokers/manager/v2/{name}", method = GET)
-    List<Broker> fetchBrokersByManagerV2(@PathVariable("name") String name);
 }

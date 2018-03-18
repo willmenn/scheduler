@@ -37,7 +37,7 @@ public class ScheduleBrokerServiceV2 {
 
 
     public List<Plantao> buildSchedule(String managerName) {
-        List<Broker> brokers = brokerClient.fetchBrokersByManagerV2(managerName);
+        List<Broker> brokers = brokerClient.fetchBrokersByManager(managerName);
         List<Plantao> plantoes = shiftPlaceClient.fetchShiftPlaceByManagerV2(managerName);
 
         ScheduleWrapper scheduleWrapper = buildMultiSchedule.build(plantoes, brokers);
