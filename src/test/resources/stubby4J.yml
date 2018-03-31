@@ -1,5 +1,5 @@
 -  request:
-      url: /brokers/manager/v2/MTest
+      url: /brokers/manager/MTest
       method: GET
    response:
    -  status: 200
