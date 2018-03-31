@@ -8,7 +8,7 @@
       file: stubs/brokerList.json
 
 -  request:
-      url: /shiftPlace/manager/v2/MTest
+      url: /shiftPlace/manager/MTest
       method: GET
    response:
    -  status: 200

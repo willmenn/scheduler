@@ -18,6 +18,6 @@ public interface ShiftPlaceClient {
     @RequestMapping(value = "/shiftPlace/manager/{name}", method = GET)
     List<ShiftPlace> fetchShiftPlaceByManager(@PathVariable("name") String name);
 
-    @RequestMapping(value = "/shiftPlace/manager/v2/{name}", method = GET)
+    @RequestMapping(value = "/shiftPlace/manager/{name}", method = GET)
     List<Plantao> fetchShiftPlaceByManagerV2(@PathVariable("name") String name);
 }
