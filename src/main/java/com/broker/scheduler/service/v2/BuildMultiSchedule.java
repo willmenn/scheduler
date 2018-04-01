@@ -20,13 +20,11 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class BuildMultiSchedule {
 
-    private static final Map<String, List<Broker>> alreadyScheduled = Maps.newHashMap();
-
-    public BuildMultiSchedule() {
-        buildEmptyScheduleMap();
-    }
+    private Map<String, List<Broker>> alreadyScheduled;
 
     public ScheduleWrapper build(List<Plantao> plantoes, List<Broker> brokers) {
+        alreadyScheduled = Maps.newHashMap();
+        buildEmptyScheduleMap();
 
         Map<String, List<Broker>> mapFromBrokersMatchingDays = createMapFromBrokersMatchingDays(brokers);
 
