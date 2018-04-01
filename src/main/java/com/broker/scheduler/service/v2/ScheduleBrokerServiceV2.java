@@ -7,6 +7,7 @@ import com.broker.scheduler.repository.ScheduleV2Repository;
 import com.broker.scheduler.service.v2.BuildMultiSchedule.ScheduleWrapper;
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class ScheduleBrokerServiceV2 {
 
     public ScheduleModelV2 buildSchedule(String managerName) {
         List<Broker> brokers = brokerClient.fetchBrokersByManager(managerName);
+        Preconditions.checkArgument(brokers.size() > 0);
         List<Plantao> plantoes = shiftPlaceClient.fetchShiftPlaceByManagerV2(managerName);
 
         ScheduleWrapper scheduleWrapper = buildMultiSchedule.build(plantoes, brokers);
