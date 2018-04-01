@@ -36,7 +36,7 @@ public class ScheduleBrokerServiceV2 {
     }
 
 
-    public List<Plantao> buildSchedule(String managerName) {
+    public ScheduleModelV2 buildSchedule(String managerName) {
         List<Broker> brokers = brokerClient.fetchBrokersByManager(managerName);
         List<Plantao> plantoes = shiftPlaceClient.fetchShiftPlaceByManagerV2(managerName);
 
@@ -44,11 +44,9 @@ public class ScheduleBrokerServiceV2 {
         List<Plantao> plantaos = filBlankSpace
                 .toFilBlankSpace(scheduleWrapper.getPlantaos(), scheduleWrapper.alreadyScheduled, brokers);
 
-        repository.save(ScheduleModelV2.builder()
+        return repository.save(ScheduleModelV2.builder()
                 .plantaos(plantaos)
                 .build());
-
-        return plantaos;
     }
 
     public ScheduleModelV2 getScheduleV2(String id){

@@ -1,6 +1,5 @@
 package com.broker.scheduler.controller.v2;
 
-import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v2.ScheduleBrokerServiceV2;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -38,7 +36,7 @@ public class ScheduleControllerV2 {
     @RequestMapping(method = POST, value = "/schedule",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public List<Plantao> createSchedule(@RequestBody @Valid ScheduleV2DTO dto) {
+    public ScheduleModelV2 createSchedule(@RequestBody @Valid ScheduleV2DTO dto) {
         return serviceV2.buildSchedule(dto.getManager());
     }
 

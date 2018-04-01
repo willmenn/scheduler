@@ -4,6 +4,7 @@ import by.stub.client.StubbyClient;
 import com.broker.scheduler.BrokerSchedulerApplicationTests;
 import com.broker.scheduler.controller.v2.ScheduleControllerV2;
 import com.broker.scheduler.service.v2.model.Plantao;
+import com.broker.scheduler.service.v2.model.ScheduleModelV2;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -42,13 +42,13 @@ public class SchedulerControllerIntegrationTest extends BrokerSchedulerApplicati
     @Test
     public void shouldBeAbleToScheduleTeamOfBrokers() throws Exception {
         HttpEntity body = new HttpEntity<>(new ScheduleControllerV2.ScheduleV2DTO("MTest"));
-        List<Plantao> response = template.exchange("http://localhost:" + randomServerPort + "/v2/schedule",
+        ScheduleModelV2 response = template.exchange("http://localhost:" + randomServerPort + "/v2/schedule",
                 POST,
                 body,
-                new ParameterizedTypeReference<List<Plantao>>() {
+                new ParameterizedTypeReference<ScheduleModelV2>() {
                 }).getBody();
 
-        Map<String, Plantao> plantaoMap = response.stream().collect(toMap(p -> p.getShiftPlaceId(), Function.identity()));
+        Map<String, Plantao> plantaoMap = response.getPlantaos().stream().collect(toMap(p -> p.getShiftPlaceId(), Function.identity()));
 
         Plantao plantao1 = plantaoMap.get("5917b6348d8b0061117d01ed");
         assertEquals(3, plantao1.getScheduled().get("TUE").size());

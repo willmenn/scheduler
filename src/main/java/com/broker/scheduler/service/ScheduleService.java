@@ -70,9 +70,4 @@ public class ScheduleService {
         });
         return map;
     }
-    /*
-    Cria um mapa por <Dia, list<Broker>> por preferencia.
-    Cria um mapa por <Dia, list<ShiftPlace>>.
-    Botar todos os brokers em uma pilha, e add conforme o numero de vagas no shiftplace;
-     */
 }
