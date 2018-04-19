@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -23,6 +24,6 @@ public class ScheduleModelV2 {
     private LocalDateTime createdTimestamp;
 
     public String getTimestamp(){
-        return this.createdTimestamp.toString();
+        return this.createdTimestamp.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 }
