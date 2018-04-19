@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,6 +23,8 @@ public class Broker {
     private Preference preference;
 
     private String manager;
+
+    private List<String> daysScheduled;
 
     @Override
     public boolean equals(Object o) {

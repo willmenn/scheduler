@@ -24,4 +24,7 @@ public class Plantao {
     String shiftPlaceId;
     @NotBlank
     String managersName;
+    String name;
+    String address;
+    String places;
 }
