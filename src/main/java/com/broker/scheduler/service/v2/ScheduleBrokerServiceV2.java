@@ -9,8 +9,12 @@ import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -48,10 +52,16 @@ public class ScheduleBrokerServiceV2 {
 
         return repository.save(ScheduleModelV2.builder()
                 .plantaos(plantaos)
+                .managerName(managerName)
+                .createdTimestamp(LocalDateTime.now(Clock.system(ZoneId.of("America/Sao_Paulo"))))
                 .build());
     }
 
-    public ScheduleModelV2 getScheduleV2(String id){
+    public ScheduleModelV2 getScheduleV2(String id) {
         return repository.findOne(id);
+    }
+
+    public List<ScheduleModelV2> getListScheduleV2(String managerName) {
+        return repository.findByManagerNameOrderByCreatedTimestamp(managerName, new PageRequest(0, 10));
     }
 }

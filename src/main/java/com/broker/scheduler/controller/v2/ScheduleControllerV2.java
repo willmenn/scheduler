@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -43,6 +45,11 @@ public class ScheduleControllerV2 {
     @RequestMapping(method = GET, value = "/schedule")
     public ScheduleModelV2 getSchedule(@RequestParam("id") String id) {
         return serviceV2.getScheduleV2(id);
+    }
+
+    @RequestMapping(method = GET, value = "/schedules")
+    public List<ScheduleModelV2> getSchedules(@RequestParam("managerName") String managerName) {
+        return serviceV2.getListScheduleV2(managerName);
     }
 
 
