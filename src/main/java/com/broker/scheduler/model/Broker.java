@@ -20,6 +20,8 @@ public class Broker {
     @NonNull
     private Preference preference;
 
+    private String manager;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
