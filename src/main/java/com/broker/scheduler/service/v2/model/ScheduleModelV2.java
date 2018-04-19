@@ -21,4 +21,8 @@ public class ScheduleModelV2 {
     private List<Plantao> plantaos;
     private String managerName;
     private LocalDateTime createdTimestamp;
+
+    public String getTimestamp(){
+        return this.createdTimestamp.toString();
+    }
 }
