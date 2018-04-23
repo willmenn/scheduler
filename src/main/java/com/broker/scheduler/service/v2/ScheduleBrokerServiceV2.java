@@ -7,6 +7,7 @@ import com.broker.scheduler.repository.ScheduleV2Repository;
 import com.broker.scheduler.service.v2.BuildMultiSchedule.ScheduleWrapper;
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
+import com.broker.scheduler.service.v2.model.ShiftPlaceDay;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,12 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by wahrons on 15/01/18.
@@ -59,6 +65,21 @@ public class ScheduleBrokerServiceV2 {
 
     public ScheduleModelV2 getScheduleV2(String id) {
         return repository.findOne(id);
+    }
+
+    public Map<Broker, List<ShiftPlaceDay>> getScheduleBrokerV2(String id) {
+        ScheduleModelV2 scheduleV2 = getScheduleV2(id);
+        List<Broker> brokers = brokerClient.fetchBrokersByManager(scheduleV2.getManagerName());
+        Map<Broker, List<ShiftPlaceDay>> brokersSchedule = brokers.stream().collect(toMap(Function.identity(),
+                s -> new ArrayList<ShiftPlaceDay>()));
+
+        scheduleV2.getPlantaos()
+                .forEach(p -> p.getScheduled().keySet()
+                        .forEach(day -> p.getScheduled().get(day)
+                                .forEach(broker -> brokersSchedule.get(broker)
+                                        .add(new ShiftPlaceDay(p.getName(), p.getShiftPlaceId(), day)))));
+
+        return brokersSchedule;
     }
 
     public List<ScheduleModelV2> getListScheduleV2(String managerName) {
