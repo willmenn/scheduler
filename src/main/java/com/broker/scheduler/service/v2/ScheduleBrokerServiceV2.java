@@ -76,7 +76,7 @@ public class ScheduleBrokerServiceV2 {
         scheduleV2.getPlantaos()
                 .forEach(p -> p.getScheduled().keySet()
                         .forEach(day -> p.getScheduled().get(day)
-                                .forEach(broker -> brokersSchedule.get(broker)
+                                .forEach(broker -> brokersSchedule.get(broker.getName())
                                         .add(new ShiftPlaceDay(p.getName(), p.getShiftPlaceId(), day)))));
 
         return new ScheduleByBroker(brokersSchedule, brokers);
