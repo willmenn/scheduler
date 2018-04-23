@@ -1,9 +1,8 @@
 package com.broker.scheduler.controller.v2;
 
-import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.service.v2.ScheduleBrokerServiceV2;
+import com.broker.scheduler.service.v2.model.ScheduleByBroker;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
-import com.broker.scheduler.service.v2.model.ShiftPlaceDay;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -57,7 +55,7 @@ public class ScheduleControllerV2 {
     }
 
     @RequestMapping(method = GET, value = "/schedule/{id}/broker")
-    public Map<Broker, List<ShiftPlaceDay>> getScheduleBroker(@PathVariable("id") String id) {
+    public ScheduleByBroker getScheduleBroker(@PathVariable("id") String id) {
         return serviceV2.getScheduleBrokerV2(id);
     }
 

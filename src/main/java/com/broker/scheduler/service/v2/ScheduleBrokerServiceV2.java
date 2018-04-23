@@ -6,6 +6,7 @@ import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.repository.ScheduleV2Repository;
 import com.broker.scheduler.service.v2.BuildMultiSchedule.ScheduleWrapper;
 import com.broker.scheduler.service.v2.model.Plantao;
+import com.broker.scheduler.service.v2.model.ScheduleByBroker;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
 import com.broker.scheduler.service.v2.model.ShiftPlaceDay;
 import com.google.common.base.Preconditions;
@@ -19,7 +20,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -67,10 +67,10 @@ public class ScheduleBrokerServiceV2 {
         return repository.findOne(id);
     }
 
-    public Map<Broker, List<ShiftPlaceDay>> getScheduleBrokerV2(String id) {
+    public ScheduleByBroker getScheduleBrokerV2(String id) {
         ScheduleModelV2 scheduleV2 = getScheduleV2(id);
         List<Broker> brokers = brokerClient.fetchBrokersByManager(scheduleV2.getManagerName());
-        Map<Broker, List<ShiftPlaceDay>> brokersSchedule = brokers.stream().collect(toMap(Function.identity(),
+        Map<String, List<ShiftPlaceDay>> brokersSchedule = brokers.stream().collect(toMap(Broker::getName,
                 s -> new ArrayList<ShiftPlaceDay>()));
 
         scheduleV2.getPlantaos()
@@ -79,7 +79,7 @@ public class ScheduleBrokerServiceV2 {
                                 .forEach(broker -> brokersSchedule.get(broker)
                                         .add(new ShiftPlaceDay(p.getName(), p.getShiftPlaceId(), day)))));
 
-        return brokersSchedule;
+        return new ScheduleByBroker(brokersSchedule, brokers);
     }
 
     public List<ScheduleModelV2> getListScheduleV2(String managerName) {
