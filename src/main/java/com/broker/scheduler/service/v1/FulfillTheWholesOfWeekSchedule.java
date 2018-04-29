@@ -1,4 +1,4 @@
-package com.broker.scheduler.service;
+package com.broker.scheduler.service.v1;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.model.DaySchedule;

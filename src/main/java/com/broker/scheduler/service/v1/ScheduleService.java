@@ -1,4 +1,4 @@
-package com.broker.scheduler.service;
+package com.broker.scheduler.service.v1;
 
 import com.broker.scheduler.client.BrokerClient;
 import com.broker.scheduler.client.ShiftPlaceClient;

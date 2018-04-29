@@ -6,6 +6,8 @@ import com.broker.scheduler.model.DaySchedule;
 import com.broker.scheduler.model.Preference;
 import com.broker.scheduler.model.ShiftPlace;
 import com.broker.scheduler.model.WeekSchedule;
+import com.broker.scheduler.service.v1.BuildWeekSchedule;
+import com.broker.scheduler.service.v1.FulfillTheWholesOfWeekSchedule;
 import org.junit.Before;
 import org.junit.Test;
 

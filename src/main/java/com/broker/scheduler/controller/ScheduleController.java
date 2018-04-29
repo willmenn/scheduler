@@ -2,7 +2,7 @@ package com.broker.scheduler.controller;
 
 import com.broker.scheduler.model.ScheduleModel;
 import com.broker.scheduler.model.WeekSchedule;
-import com.broker.scheduler.service.ScheduleService;
+import com.broker.scheduler.service.v1.ScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
