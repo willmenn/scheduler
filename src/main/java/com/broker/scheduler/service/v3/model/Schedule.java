@@ -14,6 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.broker.scheduler.service.v3.model.DayEnum.FRI;
+import static com.broker.scheduler.service.v3.model.DayEnum.MON;
+import static com.broker.scheduler.service.v3.model.DayEnum.SAT;
+import static com.broker.scheduler.service.v3.model.DayEnum.SUN;
+import static com.broker.scheduler.service.v3.model.DayEnum.THU;
+import static com.broker.scheduler.service.v3.model.DayEnum.TUE;
+import static com.broker.scheduler.service.v3.model.DayEnum.WED;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
@@ -37,31 +44,31 @@ public class Schedule {
     public static class ShiftPlaceV3 {
         private String name;
         private String id;
-        private Map<String, Day> days;
+        private Map<DayEnum, Day> days;
 
         public ShiftPlaceV3(String name, String id) {
             this.name = name;
             this.id = id;
             this.days = new HashMap<>(7);
-            days.put("SUN", new Day("SUN"));
-            days.put("MON", new Day("MON"));
-            days.put("TUE", new Day("TUE"));
-            days.put("WED", new Day("WED"));
-            days.put("THU", new Day("THU"));
-            days.put("FRI", new Day("FRI"));
-            days.put("SAT", new Day("SAT"));
+            days.put(SUN, new Day(SUN));
+            days.put(MON, new Day(MON));
+            days.put(TUE, new Day(TUE));
+            days.put(WED, new Day(WED));
+            days.put(THU, new Day(THU));
+            days.put(FRI, new Day(FRI));
+            days.put(SAT, new Day(SAT));
         }
 
     }
 
     @Data
     public static class Day {
-        private String name;
+        private DayEnum name;
         private Shift morning;
         private Shift afternoon;
         private Shift night;
 
-        public Day(String name) {
+        public Day(DayEnum name) {
             this.name = name;
             this.morning = new Shift(MORNING);
             this.afternoon = new Shift(AFTERNOON);
@@ -75,12 +82,10 @@ public class Schedule {
     public static class Shift {
         private ShiftTimeEnum name;
         private List<BrokerV3> brokerV3List;
-        private Integer max;
-        private Integer count;
+        private int max;
 
         public Shift(ShiftTimeEnum name) {
             this.brokerV3List = new ArrayList();
-            this.count = 0;
             this.name = name;
         }
     }
@@ -99,7 +104,7 @@ public class Schedule {
         shiftPlaces.forEach(sp -> {
             Schedule.ShiftPlaceV3 spV3 = new Schedule.ShiftPlaceV3(sp.getName(), sp.getShiftPlaceId());
             sp.getDaysV3().forEach((key, value) -> {
-                Schedule.Day day = spV3.getDays().get(key);
+                Schedule.Day day = spV3.getDays().get(DayEnum.valueOf(key));
                 day.getMorning().setMax(value.getMorning());
                 day.getAfternoon().setMax(value.getAfternoon());
                 day.getNight().setMax(value.getNight());

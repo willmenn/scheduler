@@ -6,6 +6,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.broker.scheduler.service.v3.model.DayEnum.MON;
+import static com.broker.scheduler.service.v3.model.DayEnum.TUE;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
 
@@ -24,15 +26,15 @@ public class ScheduleTest {
 
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
 
-        Map<String, Schedule.Day> daysResponse = schedule.getShiftPlaceV3List().get(0).getDays();
+        Map<DayEnum, Schedule.Day> daysResponse = schedule.getShiftPlaceV3List().get(0).getDays();
 
-        assertEquals(daysResponse.get("MON").getMorning().getMax().intValue(), 3);
-        assertEquals(daysResponse.get("MON").getAfternoon().getMax().intValue(), 4);
-        assertEquals(daysResponse.get("MON").getNight().getMax().intValue(), 5);
+        assertEquals(daysResponse.get(MON).getMorning().getMax(), 3);
+        assertEquals(daysResponse.get(MON).getAfternoon().getMax(), 4);
+        assertEquals(daysResponse.get(MON).getNight().getMax(), 5);
 
-        assertEquals(daysResponse.get("TUE").getMorning().getMax().intValue(), 3);
-        assertEquals(daysResponse.get("TUE").getAfternoon().getMax().intValue(), 3);
-        assertEquals(daysResponse.get("TUE").getNight().getMax().intValue(), 6);
+        assertEquals(daysResponse.get(TUE).getMorning().getMax(), 3);
+        assertEquals(daysResponse.get(TUE).getAfternoon().getMax(), 3);
+        assertEquals(daysResponse.get(TUE).getNight().getMax(), 6);
     }
 
     @Test
@@ -48,16 +50,16 @@ public class ScheduleTest {
         Plantao plantao1 = Plantao.builder().name("n-2").daysV3(days1).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao, plantao1));
 
-        Map<String, Schedule.Day> daysResponse = schedule.getShiftPlaceV3List().get(0).getDays();
-        Map<String, Schedule.Day> daysResponse1 = schedule.getShiftPlaceV3List().get(1).getDays();
+        Map<DayEnum, Schedule.Day> daysResponse = schedule.getShiftPlaceV3List().get(0).getDays();
+        Map<DayEnum, Schedule.Day> daysResponse1 = schedule.getShiftPlaceV3List().get(1).getDays();
 
-        assertEquals(daysResponse.get("MON").getMorning().getMax().intValue(), 3);
-        assertEquals(daysResponse.get("MON").getAfternoon().getMax().intValue(), 4);
-        assertEquals(daysResponse.get("MON").getNight().getMax().intValue(), 5);
+        assertEquals(daysResponse.get(MON).getMorning().getMax(), 3);
+        assertEquals(daysResponse.get(MON).getAfternoon().getMax(), 4);
+        assertEquals(daysResponse.get(MON).getNight().getMax(), 5);
 
-        assertEquals(daysResponse1.get("MON").getMorning().getMax().intValue(), 1);
-        assertEquals(daysResponse1.get("MON").getAfternoon().getMax().intValue(), 2);
-        assertEquals(daysResponse1.get("MON").getNight().getMax().intValue(), 3);
+        assertEquals(daysResponse1.get(MON).getMorning().getMax(), 1);
+        assertEquals(daysResponse1.get(MON).getAfternoon().getMax(), 2);
+        assertEquals(daysResponse1.get(MON).getNight().getMax(), 3);
     }
 
 }
