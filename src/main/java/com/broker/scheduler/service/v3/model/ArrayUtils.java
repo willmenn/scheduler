@@ -10,7 +10,7 @@ import java.util.TreeSet;
  */
 public class ArrayUtils {
 
-    public static List shuffleArray(List list, RandomNumber randomNumber) {
+    public static List shuffleArray(List list, RandomScheduler randomNumber) {
         List v3 = new ArrayList<>(list.size());
         Set<Integer> integerRandom = new TreeSet<>();
 
@@ -23,6 +23,6 @@ public class ArrayUtils {
             integerRandom.add(randomInt);
         }
 
-        return list;
+        return v3;
     }
 }

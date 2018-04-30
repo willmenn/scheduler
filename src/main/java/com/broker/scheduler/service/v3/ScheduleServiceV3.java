@@ -36,7 +36,9 @@ public class ScheduleServiceV3 {
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(shiftPlaces).setBrokers(brokers);
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        scheduleBuilder.createSchedule(schedule,alreadyScheduled, randomNumber);
+        schedule = scheduleBuilder.createSchedule(schedule, alreadyScheduled, randomNumber);
+
+
 
         return null;
     }

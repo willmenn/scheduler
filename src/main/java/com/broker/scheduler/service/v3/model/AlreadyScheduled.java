@@ -47,7 +47,7 @@ public class AlreadyScheduled {
     public List<BrokerV3> getUpdatedBrokerList(DayEnum day,
                                                ShiftTimeEnum shiftTimeEnum,
                                                List<BrokerV3> brokers,
-                                               RandomNumber randomNumber) {
+                                               RandomScheduler randomNumber) {
         List<BrokerV3> brokersFiltered = brokers.stream()
                 .filter(broker ->
                         !this.containsBrokerOnDayShift(day, shiftTimeEnum, broker.getName()))

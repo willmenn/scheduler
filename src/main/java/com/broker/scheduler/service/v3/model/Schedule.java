@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +35,9 @@ public class Schedule {
     private String managerName;
     private LocalDateTime createdTimestamp;
     private List<BrokerV3> brokerV3s;
+    private BigDecimal score;
 
-    public List<ShiftPlaceV3> getShiftPlaceV3List(RandomNumber randomNumber){
+    public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber){
         return ArrayUtils.shuffleArray(this.shiftPlaceV3List,randomNumber);
     }
 
@@ -101,6 +103,7 @@ public class Schedule {
     public static class BrokerV3 {
         private String name;
         private String id;
+        private BigDecimal score;
     }
 
     public Schedule convertShiftPlaceToSchedule(List<Plantao> shiftPlaces) {

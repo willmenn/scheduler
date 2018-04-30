@@ -2,7 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
-import com.broker.scheduler.service.v3.model.RandomNumber;
+import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +35,12 @@ public class ScheduleBuilderTest {
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
 
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1");
+        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1",null);
         schedule.setBrokerV3s(newArrayList(brokerV3));
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new FakeRandomNumber());
 
         Schedule.Day day = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, day.getMorning().getBrokerV3List().size());
@@ -56,13 +56,13 @@ public class ScheduleBuilderTest {
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
 
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1");
-        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2");
+        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1",null);
+        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2", null);
         schedule.setBrokerV3s(newArrayList(brokerV3, brokerV31));
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new FakeRandomNumber());
 
         Schedule.Day day = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, day.getMorning().getBrokerV3List().size());
@@ -79,13 +79,13 @@ public class ScheduleBuilderTest {
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
 
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1");
-        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2");
+        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1", null);
+        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2", null);
         schedule.setBrokerV3s(newArrayList(brokerV3, brokerV31));
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new FakeRandomNumber());
 
         Schedule.Day mon = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, mon.getMorning().getBrokerV3List().size());
@@ -111,13 +111,13 @@ public class ScheduleBuilderTest {
         Plantao plantao2 = Plantao.builder().name("n-2").daysV3(days2).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao, plantao2));
 
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1");
-        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2");
+        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1", null);
+        Schedule.BrokerV3 brokerV31 = new Schedule.BrokerV3("Harry Potter", "2", null);
         schedule.setBrokerV3s(newArrayList(brokerV3, brokerV31));
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new FakeRandomNumber());
 
         Schedule.Day mon = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, mon.getMorning().getBrokerV3List().size());

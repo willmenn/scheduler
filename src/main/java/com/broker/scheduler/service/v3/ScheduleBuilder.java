@@ -2,7 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
 import com.broker.scheduler.service.v3.model.DayEnum;
-import com.broker.scheduler.service.v3.model.RandomNumber;
+import com.broker.scheduler.service.v3.model.RandomScheduler;
 import com.broker.scheduler.service.v3.model.Schedule;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ScheduleBuilder {
 
     public Schedule createSchedule(Schedule schedule,
                                    AlreadyScheduled alreadyScheduled,
-                                   RandomNumber randomNumber) {
+                                   RandomScheduler randomNumber) {
         List<Schedule.BrokerV3> brokerV3List = schedule.getBrokerV3s();
         schedule.getShiftPlaceV3List(randomNumber).forEach(sp -> {
             sp.getDays().entrySet().forEach(entry -> {
@@ -37,7 +37,7 @@ public class ScheduleBuilder {
     private void addBrokersToShiftTimeOfADay(List<Schedule.BrokerV3> brokerV3List,
                                              AlreadyScheduled alreadyScheduled,
                                              DayEnum dayEnum,
-                                             Schedule.Shift shift, RandomNumber randomNumber) {
+                                             Schedule.Shift shift, RandomScheduler randomNumber) {
         List<Schedule.BrokerV3> brokersFree = alreadyScheduled.getUpdatedBrokerList(dayEnum,
                 shift.getName(), brokerV3List, randomNumber);
         int count = 0;
