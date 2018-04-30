@@ -47,4 +47,6 @@ public class AlreadyScheduledTest {
         assertFalse(scheduled.containsBrokerOnDayShift(MON, MORNING, "John Due"));
         assertTrue(scheduled.containsBrokerOnDayShift(TUE, NIGHT, "Frodo"));
     }
+
+
 }

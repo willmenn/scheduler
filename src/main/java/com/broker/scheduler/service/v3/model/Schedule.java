@@ -35,6 +35,10 @@ public class Schedule {
     private LocalDateTime createdTimestamp;
     private List<BrokerV3> brokerV3s;
 
+    public List<ShiftPlaceV3> getShiftPlaceV3List(RandomNumber randomNumber){
+        return ArrayUtils.shuffleArray(this.shiftPlaceV3List,randomNumber);
+    }
+
     public Schedule() {
         this.shiftPlaceV3List = new ArrayList<>();
     }

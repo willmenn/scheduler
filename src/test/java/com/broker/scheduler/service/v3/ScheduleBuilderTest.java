@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class ScheduleBuilderTest {
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled);
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
         Schedule.Day day = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, day.getMorning().getBrokerV3List().size());
@@ -61,7 +62,7 @@ public class ScheduleBuilderTest {
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled);
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
         Schedule.Day day = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, day.getMorning().getBrokerV3List().size());
@@ -84,7 +85,7 @@ public class ScheduleBuilderTest {
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled);
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
         Schedule.Day mon = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, mon.getMorning().getBrokerV3List().size());
@@ -116,7 +117,7 @@ public class ScheduleBuilderTest {
 
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
 
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled);
+        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
         Schedule.Day mon = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, mon.getMorning().getBrokerV3List().size());

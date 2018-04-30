@@ -4,6 +4,8 @@ import com.broker.scheduler.client.BrokerClient;
 import com.broker.scheduler.client.ShiftPlaceClient;
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.service.v2.model.Plantao;
+import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import com.broker.scheduler.service.v3.model.Schedules;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,15 @@ public class ScheduleServiceV3 {
 
     private BrokerClient brokerClient;
     private ShiftPlaceClient shiftPlaceClient;
+    private ScheduleBuilder scheduleBuilder;
+    private RandomNumber randomNumber;
 
     @Autowired
     public ScheduleServiceV3(BrokerClient brokerClient, ShiftPlaceClient shiftPlaceClient) {
         this.brokerClient = brokerClient;
         this.shiftPlaceClient = shiftPlaceClient;
+        this.scheduleBuilder = new ScheduleBuilder();
+        this.randomNumber = new RandomNumber();
     }
 
     public Schedules createSchedules(String manager) {
@@ -28,6 +34,9 @@ public class ScheduleServiceV3 {
         List<Plantao> shiftPlaces = shiftPlaceClient.fetchShiftPlaceByManagerV2(manager);
 
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(shiftPlaces).setBrokers(brokers);
+
+        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
+        scheduleBuilder.createSchedule(schedule,alreadyScheduled, randomNumber);
 
         return null;
     }

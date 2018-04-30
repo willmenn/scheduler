@@ -46,12 +46,14 @@ public class AlreadyScheduled {
 
     public List<BrokerV3> getUpdatedBrokerList(DayEnum day,
                                                ShiftTimeEnum shiftTimeEnum,
-                                               List<BrokerV3> brokers) {
-        return brokers.stream()
+                                               List<BrokerV3> brokers,
+                                               RandomNumber randomNumber) {
+        List<BrokerV3> brokersFiltered = brokers.stream()
                 .filter(broker ->
                         !this.containsBrokerOnDayShift(day, shiftTimeEnum, broker.getName()))
                 .collect(toList());
 
+        return ArrayUtils.shuffleArray(brokersFiltered, randomNumber);
     }
 
     public void addBroker(DayEnum day, ShiftTimeEnum shiftName, BrokerV3 broker) {

@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
 import com.broker.scheduler.service.v3.model.DayEnum;
+import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 
 import java.util.List;
@@ -13,16 +14,20 @@ import java.util.List;
 public class ScheduleBuilder {
 
     public Schedule createSchedule(Schedule schedule,
-                                   AlreadyScheduled alreadyScheduled) {
+                                   AlreadyScheduled alreadyScheduled,
+                                   RandomNumber randomNumber) {
         List<Schedule.BrokerV3> brokerV3List = schedule.getBrokerV3s();
-        schedule.getShiftPlaceV3List().forEach(sp -> {
+        schedule.getShiftPlaceV3List(randomNumber).forEach(sp -> {
             sp.getDays().entrySet().forEach(entry -> {
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
-                        entry.getValue().getName(), entry.getValue().getMorning());
+                        entry.getValue().getName(), entry.getValue().getMorning(),
+                        randomNumber);
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
-                        entry.getValue().getName(), entry.getValue().getAfternoon());
+                        entry.getValue().getName(), entry.getValue().getAfternoon(),
+                        randomNumber);
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
-                        entry.getValue().getName(), entry.getValue().getNight());
+                        entry.getValue().getName(), entry.getValue().getNight(),
+                        randomNumber);
             });
         });
 
@@ -32,9 +37,9 @@ public class ScheduleBuilder {
     private void addBrokersToShiftTimeOfADay(List<Schedule.BrokerV3> brokerV3List,
                                              AlreadyScheduled alreadyScheduled,
                                              DayEnum dayEnum,
-                                             Schedule.Shift shift) {
+                                             Schedule.Shift shift, RandomNumber randomNumber) {
         List<Schedule.BrokerV3> brokersFree = alreadyScheduled.getUpdatedBrokerList(dayEnum,
-                shift.getName(), brokerV3List);
+                shift.getName(), brokerV3List, randomNumber);
         int count = 0;
         int max = shift.getMax() <= (brokersFree.size()) ? shift.getMax() : (brokersFree.size());
         while (max > count) {
