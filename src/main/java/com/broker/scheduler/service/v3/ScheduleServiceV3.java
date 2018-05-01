@@ -38,8 +38,7 @@ public class ScheduleServiceV3 {
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
         schedule = scheduleBuilder.createSchedule(schedule, alreadyScheduled, randomNumber);
 
-
-
+        // add calculate Score
         return null;
     }
 

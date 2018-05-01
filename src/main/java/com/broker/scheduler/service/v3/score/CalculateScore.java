@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3.score;
 
 import com.broker.scheduler.service.v3.model.Schedule;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -11,12 +12,13 @@ public class CalculateScore {
 
     public Schedule calculate(Schedule schedule) {
 
-        Map<String, BrokerScore> brokerScore = new BrokerScore().buildBrokerScoreMap(schedule);
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
 
-        return null;
+        int sum = brokerScoreMap.values().stream()
+                .mapToInt(BrokerScore::calculateScore)
+                .sum();
+
+        schedule.setScore(BigDecimal.valueOf(sum));
+        return schedule;
     }
-
-
-
-
 }

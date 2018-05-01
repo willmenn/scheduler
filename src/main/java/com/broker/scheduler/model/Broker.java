@@ -1,5 +1,6 @@
 package com.broker.scheduler.model;
 
+import com.broker.scheduler.service.v3.score.ScoreFunction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +27,8 @@ public class Broker {
     private String manager;
 
     private List<String> daysScheduled;
+
+    private Map<ScoreFunction, List<String>> constraints;
 
     @Override
     public boolean equals(Object o) {

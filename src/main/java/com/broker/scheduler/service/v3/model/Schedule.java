@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3.model;
 
 import com.broker.scheduler.model.Broker;
 import com.broker.scheduler.service.v2.model.Plantao;
+import com.broker.scheduler.service.v3.score.ScoreFunction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -104,6 +105,7 @@ public class Schedule {
         private String name;
         private String id;
         private BigDecimal score;
+        private Map<ScoreFunction, List<String>> constraints;
     }
 
     public Schedule convertShiftPlaceToSchedule(List<Plantao> shiftPlaces) {
@@ -127,6 +129,7 @@ public class Schedule {
         brokers.forEach(b -> v3.add(BrokerV3.builder()
                 .id(b.getBrokerId())
                 .name(b.getName())
+                .constraints(b.getConstraints())
                 .build()));
 
         this.setBrokerV3s(v3);

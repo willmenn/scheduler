@@ -27,6 +27,8 @@ class BrokerScore {
     private Map<String, ShiftPlaceV3> shiftPlaces;
     private Map<DayEnum, Day> days;
     private Map<ShiftTimeEnum, Shift> shifts;
+    private Map<ScoreFunction, List<String>> constraints;
+    private int score;
 
     Map<String, BrokerScore> buildBrokerScoreMap(Schedule schedule) {
         Map<String, BrokerScore> brokerScore = BrokerScore.createMapFromBrokerV3(schedule.getBrokerV3s());
@@ -34,6 +36,19 @@ class BrokerScore {
         addValuesToBrokerScoreMap(schedule, brokerScore);
 
         return brokerScore;
+    }
+
+    int calculateScore() {
+        int sum = this.constraints.entrySet().stream()
+                .mapToInt((entry) ->
+                        entry.getValue().stream()
+                                .mapToInt(string ->
+                                        entry.getKey().getConstraint()
+                                                .apply(string, this)).sum())
+                .sum();
+
+        this.score = sum;
+        return sum;
     }
 
     private void addValuesToBrokerScoreMap(Schedule schedule, Map<String, BrokerScore> brokerScore) {
@@ -51,6 +66,7 @@ class BrokerScore {
                 .shiftPlaces(new HashMap<>())
                 .days(new HashMap<>())
                 .shifts(new HashMap<>())
+                .constraints(broker.getConstraints())
                 .build()));
         return scores;
     }
