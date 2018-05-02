@@ -8,6 +8,7 @@ import com.broker.scheduler.service.v3.model.AlreadyScheduled;
 import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import com.broker.scheduler.service.v3.model.Schedules;
+import com.broker.scheduler.service.v3.score.CalculateScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class ScheduleServiceV3 {
 
     private BrokerClient brokerClient;
     private ShiftPlaceClient shiftPlaceClient;
+    private CalculateScore calculateScore;
     private ScheduleBuilder scheduleBuilder;
     private RandomNumber randomNumber;
 
@@ -25,6 +27,7 @@ public class ScheduleServiceV3 {
     public ScheduleServiceV3(BrokerClient brokerClient, ShiftPlaceClient shiftPlaceClient) {
         this.brokerClient = brokerClient;
         this.shiftPlaceClient = shiftPlaceClient;
+        this.calculateScore = new CalculateScore();
         this.scheduleBuilder = new ScheduleBuilder();
         this.randomNumber = new RandomNumber();
     }
@@ -38,7 +41,8 @@ public class ScheduleServiceV3 {
         AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
         schedule = scheduleBuilder.createSchedule(schedule, alreadyScheduled, randomNumber);
 
-        // add calculate Score
+        Schedule scoredSchedule = calculateScore.calculate(schedule);
+        
         return null;
     }
 
