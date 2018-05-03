@@ -12,6 +12,7 @@ import com.broker.scheduler.service.v3.score.CalculateScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,8 +43,11 @@ public class ScheduleServiceV3 {
         schedule = scheduleBuilder.createSchedule(schedule, alreadyScheduled, randomNumber);
 
         Schedule scoredSchedule = calculateScore.calculate(schedule);
-        
-        return null;
+
+        Schedules schedules = new Schedules();
+        schedules.setSchedule(new ArrayList<>());
+        schedules.getSchedule().add(scoredSchedule);
+        return schedules;
     }
 
 
