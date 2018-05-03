@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildOnePlantaoMon345WithOneBroker;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
 import static com.broker.scheduler.service.v3.model.DayEnum.TUE;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
@@ -38,21 +39,11 @@ public class BrokerScoreTest {
 
     @Test
     public void shouldBeAbleToCreateBrokerScoreMapGivenSchedule() {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        String shiftPlaceName = "n-1";
-        Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
+        Schedule schedule = buildOnePlantaoMon345WithOneBroker(null);
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
 
         String brokerName = "John due";
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, null);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        Schedule schedulFilled = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
-
-        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedulFilled);
-
+        String shiftPlaceName = "n-1";
         assertTrue(brokerScoreMap.containsKey(brokerName));
         BrokerScore brokerScore = brokerScoreMap.get(brokerName);
         assertTrue(brokerScore.getDays().containsKey(MON));
@@ -137,100 +128,59 @@ public class BrokerScoreTest {
 
     @Test
     public void shouldBeAbleToCalculateScore() {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        String shiftPlaceName = "n-1";
-        Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
-
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
-        constraints.put(ScoreFunction.SHIFT_PLACE, newArrayList(shiftPlaceName));
-        String brokerName = "John due";
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, constraints);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        Schedule schedulFilled = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        constraints.put(ScoreFunction.SHIFT_PLACE, newArrayList("n-1"));
 
-        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedulFilled);
-        int score = brokerScoreMap.get(brokerName).calculateScore();
+        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
+        int score = brokerScoreMap.get("John due").calculateScore();
 
         assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get(brokerName).getScore());
+        assertEquals(2, brokerScoreMap.get("John due").getScore());
     }
 
     @Test
     public void shouldBeAbleToCalculateScoreForDay() {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        String shiftPlaceName = "n-1";
-        Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
-
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
         constraints.put(ScoreFunction.DAY, newArrayList("MON"));
-        String brokerName = "John due";
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, constraints);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        Schedule scheduleFilled = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
-        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(scheduleFilled);
-        int score = brokerScoreMap.get(brokerName).calculateScore();
+        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
+        int score = brokerScoreMap.get("John due").calculateScore();
 
         assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get(brokerName).getScore());
+        assertEquals(2, brokerScoreMap.get("John due").getScore());
     }
 
     @Test
     public void shouldBeAbleToCalculateScoreForShift() {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        String shiftPlaceName = "n-1";
-        Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
-
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
         constraints.put(ScoreFunction.SHIFT, newArrayList("MORNING"));
-        String brokerName = "John due";
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, constraints);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        Schedule scheduleFilled = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
+        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
 
-        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(scheduleFilled);
-        int score = brokerScoreMap.get(brokerName).calculateScore();
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
+        int score = brokerScoreMap.get("John due").calculateScore();
 
         assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get(brokerName).getScore());
+        assertEquals(2, brokerScoreMap.get("John due").getScore());
     }
 
 
     @Test
     public void shouldBeAbleToCalculateScoreForPartials() {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        String shiftPlaceName = "n-1";
-        Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
-
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
         constraints.put(ScoreFunction.PARTIAL_SHIFT, newArrayList("MORNING"));
         constraints.put(ScoreFunction.PARTIAL_SHIFT_PLACE, newArrayList("n-1"));
         constraints.put(ScoreFunction.PARTIAL_DAY, newArrayList("MON"));
-        String brokerName = "John due";
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, constraints);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        Schedule scheduleFilled = builder.createSchedule(schedule, alreadyScheduled, new RandomNumber());
 
-        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(scheduleFilled);
-        int score = brokerScoreMap.get(brokerName).calculateScore();
+        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
+        int score = brokerScoreMap.get("John due").calculateScore();
 
         assertEquals(3, score);
-        assertEquals(3, brokerScoreMap.get(brokerName).getScore());
+        assertEquals(3, brokerScoreMap.get("John due").getScore());
     }
 }

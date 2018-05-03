@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildOnePlantaoMon345WithOneBroker;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
 import static com.broker.scheduler.service.v3.model.DayEnum.TUE;
 import static com.google.common.collect.Lists.newArrayList;
@@ -30,18 +31,7 @@ public class ScheduleBuilderTest {
 
     @Test
     public void shouldBeAbleToScheduleOneBrokerGivenZeroOnAlreadySchedule() throws Exception {
-        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
-        days.put(MON, new Plantao.Shift(3, 4, 5));
-
-        Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
-        Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
-
-        Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3("John due", "1",null,null);
-        schedule.setBrokerV3s(newArrayList(brokerV3));
-
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-
-        Schedule response = builder.createSchedule(schedule, alreadyScheduled, new FakeRandomNumber());
+        Schedule response = buildOnePlantaoMon345WithOneBroker(null);
 
         Schedule.Day day = response.getShiftPlaceV3List().get(0).getDays().get(MON);
         assertEquals(1, day.getMorning().getBrokerV3List().size());
