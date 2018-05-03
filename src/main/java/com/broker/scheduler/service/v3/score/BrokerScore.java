@@ -47,6 +47,7 @@ class BrokerScore {
                                                 .apply(string, this)).sum())
                 .sum();
 
+        //TODO: Esta linha nao funciona
         this.score = sum;
         return sum;
     }
