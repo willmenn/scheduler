@@ -1,6 +1,7 @@
 package com.broker.scheduler.service.v2.model;
 
 import com.broker.scheduler.model.Broker;
+import com.broker.scheduler.service.v3.model.DayEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +26,9 @@ public class Plantao {
     String address;
     String places;
 
-    //Preciso deste atributo para a v3
+    //Preciso destes atributo para a v3
     @NotNull
-    Map<String, Shift> daysV3;
+    Map<DayEnum, Shift> daysV3;
 
     @NotBlank
     String shiftPlaceId;

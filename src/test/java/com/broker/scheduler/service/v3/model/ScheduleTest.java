@@ -17,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 public class ScheduleTest {
 
     @Test
-    public void shouldBeAbleToConvertShiftPlaceToScheduleGivenOnePlantao() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
-        days.put("TUE", new Plantao.Shift(3, 3, 6));
+    public void shouldBeAbleToConvertShiftPlaceToScheduleGivenOnePlantao() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
+        days.put(TUE, new Plantao.Shift(3, 3, 6));
 
         Plantao plantao = Plantao.builder().daysV3(days).build();
 
@@ -38,14 +38,14 @@ public class ScheduleTest {
     }
 
     @Test
-    public void shouldBeAbleToConvertShiftPlaceToScheduleGivenTwoPlantao() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToConvertShiftPlaceToScheduleGivenTwoPlantao() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
 
-        Map<String, Plantao.Shift> days1 = new HashMap<>();
-        days1.put("MON", new Plantao.Shift(1, 2, 3));
+        Map<DayEnum, Plantao.Shift> days1 = new HashMap<>();
+        days1.put(MON, new Plantao.Shift(1, 2, 3));
 
         Plantao plantao1 = Plantao.builder().name("n-2").daysV3(days1).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao, plantao1));

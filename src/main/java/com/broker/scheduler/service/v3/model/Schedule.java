@@ -113,7 +113,7 @@ public class Schedule {
         shiftPlaces.forEach(sp -> {
             Schedule.ShiftPlaceV3 spV3 = new Schedule.ShiftPlaceV3(sp.getName(), sp.getShiftPlaceId());
             sp.getDaysV3().forEach((key, value) -> {
-                Schedule.Day day = spV3.getDays().get(DayEnum.valueOf(key));
+                Schedule.Day day = spV3.getDays().get(key);
                 day.getMorning().setMax(value.getMorning());
                 day.getAfternoon().setMax(value.getAfternoon());
                 day.getNight().setMax(value.getNight());

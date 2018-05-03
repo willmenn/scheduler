@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class ScoreFunctionTest {
 
     @Test
-    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnShiftPlace() throws Exception {
+    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnShiftPlace() {
         Map<String, Schedule.ShiftPlaceV3> shiftPlaceV3Map = new HashMap();
         shiftPlaceV3Map.put("n-01", null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -33,7 +33,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintShiftPlace() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintShiftPlace() {
         Map<String, Schedule.ShiftPlaceV3> shiftPlaceV3Map = new HashMap();
         shiftPlaceV3Map.put("n-01", null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -46,7 +46,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnDay() throws Exception {
+    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnDay() {
         Map<DayEnum, Schedule.Day> day = new HashMap<>();
         day.put(MON, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -59,7 +59,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintDay() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintDay() {
         Map<DayEnum, Schedule.Day> day = new HashMap<>();
         day.put(MON, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -72,7 +72,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnShift() throws Exception {
+    public void shouldBeAbleToReturn2GivenBrokerDoNotWantToWorkOnShift() {
         Map<ShiftTimeEnum, Schedule.Shift> shift = new HashMap();
         shift.put(MORNING, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -85,7 +85,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintShift() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintShift() {
         Map<ShiftTimeEnum, Schedule.Shift> shift = new HashMap();
         shift.put(MORNING, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -99,7 +99,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn2GivenBrokerDoesNotPreferToWorkOnShiftPlace() throws Exception {
+    public void shouldBeAbleToReturn2GivenBrokerDoesNotPreferToWorkOnShiftPlace() {
         Map<String, Schedule.ShiftPlaceV3> shiftPlaceV3Map = new HashMap();
         shiftPlaceV3Map.put("n-01", null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -112,7 +112,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToNotPreferShiftPlace() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToNotPreferShiftPlace() {
         Map<String, Schedule.ShiftPlaceV3> shiftPlaceV3Map = new HashMap();
         shiftPlaceV3Map.put("n-01", null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -125,7 +125,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn1GivenBrokerDoesNotPreferToWorkOnDay() throws Exception {
+    public void shouldBeAbleToReturn1GivenBrokerDoesNotPreferToWorkOnDay() {
         Map<DayEnum, Schedule.Day> day = new HashMap<>();
         day.put(MON, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -138,7 +138,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToNotPreferDay() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToNotPreferDay() {
         Map<DayEnum, Schedule.Day> day = new HashMap<>();
         day.put(MON, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -151,7 +151,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn1GivenBrokerDoNotPreferToWorkOnShift() throws Exception {
+    public void shouldBeAbleToReturn1GivenBrokerDoNotPreferToWorkOnShift() {
         Map<ShiftTimeEnum, Schedule.Shift> shift = new HashMap();
         shift.put(MORNING, null);
         BrokerScore brokerScore = BrokerScore.builder()
@@ -164,7 +164,7 @@ public class ScoreFunctionTest {
     }
 
     @Test
-    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToPreferShift() throws Exception {
+    public void shouldBeAbleToReturn0GivenBrokerDoesNotHaveConstraintToPreferShift() {
         Map<ShiftTimeEnum, Schedule.Shift> shift = new HashMap();
         shift.put(MORNING, null);
         BrokerScore brokerScore = BrokerScore.builder()

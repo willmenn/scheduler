@@ -3,6 +3,7 @@ package com.broker.scheduler.service.v3.score;
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v3.ScheduleBuilder;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
@@ -31,14 +32,14 @@ public class BrokerScoreTest {
     private ScheduleBuilder builder;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         builder = new ScheduleBuilder();
     }
 
     @Test
-    public void shouldBeAbleToCreateBrokerScoreMapGivenSchedule() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCreateBrokerScoreMapGivenSchedule() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -62,9 +63,9 @@ public class BrokerScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokers() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(1, 2, 1));
+    public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokers() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(1, 2, 1));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -97,10 +98,10 @@ public class BrokerScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokersAndTwoDays() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(0, 1, 1));
-        days.put("TUE", new Plantao.Shift(0, 1, 2));
+    public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokersAndTwoDays() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(0, 1, 1));
+        days.put(TUE, new Plantao.Shift(0, 1, 2));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -135,9 +136,9 @@ public class BrokerScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCalculateScore() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScore() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -159,9 +160,9 @@ public class BrokerScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCalculateScoreForDay() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScoreForDay() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -183,9 +184,9 @@ public class BrokerScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCalculateScoreForShift() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScoreForShift() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -208,9 +209,9 @@ public class BrokerScoreTest {
 
 
     @Test
-    public void shouldBeAbleToCalculateScoreForPartials() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScoreForPartials() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();

@@ -3,6 +3,7 @@ package com.broker.scheduler.service.v3.score;
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v3.ScheduleBuilder;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.broker.scheduler.service.v3.model.DayEnum.MON;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
 
@@ -23,15 +25,15 @@ public class CalculateScoreTest {
     private CalculateScore calculateScore;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         builder = new ScheduleBuilder();
         calculateScore = new CalculateScore();
     }
 
     @Test
-    public void shouldBeAbleToCalculateScoreForSchedule() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScoreForSchedule() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();
@@ -53,9 +55,9 @@ public class CalculateScoreTest {
     }
 
     @Test
-    public void shouldBeAbleToCalculateScoreForScheduleGivenFullConstraint() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+    public void shouldBeAbleToCalculateScoreForScheduleGivenFullConstraint() {
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         String shiftPlaceName = "n-1";
         Plantao plantao = Plantao.builder().name(shiftPlaceName).daysV3(days).build();

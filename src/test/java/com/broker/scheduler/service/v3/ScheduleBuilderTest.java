@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
@@ -29,8 +30,8 @@ public class ScheduleBuilderTest {
 
     @Test
     public void shouldBeAbleToScheduleOneBrokerGivenZeroOnAlreadySchedule() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(3, 4, 5));
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(3, 4, 5));
 
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
@@ -50,8 +51,8 @@ public class ScheduleBuilderTest {
 
     @Test
     public void shouldBeAbleToScheduleTwoBrokerGivenZeroOnAlreadySchedule() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(1, 2, 1));
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(1, 2, 1));
 
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
@@ -72,9 +73,9 @@ public class ScheduleBuilderTest {
 
     @Test
     public void shouldBeAbleToScheduleTwoBrokerGivenZeroOnAlreadyScheduleAndTwoDays() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(1, 2, 1));
-        days.put("TUE", new Plantao.Shift(2, 1, 1));
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(1, 2, 1));
+        days.put(TUE, new Plantao.Shift(2, 1, 1));
 
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
@@ -100,13 +101,13 @@ public class ScheduleBuilderTest {
 
     @Test
     public void shouldBeAbleToScheduleTwoBrokerGivenZeroOnAlreadyScheduleAndTwoShiftPlaces() throws Exception {
-        Map<String, Plantao.Shift> days = new HashMap<>();
-        days.put("MON", new Plantao.Shift(1, 2, 1));
+        Map<DayEnum, Plantao.Shift> days = new HashMap<>();
+        days.put(MON, new Plantao.Shift(1, 2, 1));
 
         Plantao plantao = Plantao.builder().name("n-1").daysV3(days).build();
 
-        Map<String, Plantao.Shift> days2 = new HashMap<>();
-        days2.put("MON", new Plantao.Shift(1, 2, 1));
+        Map<DayEnum, Plantao.Shift> days2 = new HashMap<>();
+        days2.put(MON, new Plantao.Shift(1, 2, 1));
 
         Plantao plantao2 = Plantao.builder().name("n-2").daysV3(days2).build();
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao, plantao2));
