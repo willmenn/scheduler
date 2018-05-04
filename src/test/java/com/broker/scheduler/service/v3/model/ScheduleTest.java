@@ -3,7 +3,9 @@ package com.broker.scheduler.service.v3.model;
 import com.broker.scheduler.service.v2.model.Plantao;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
@@ -62,4 +64,46 @@ public class ScheduleTest {
         assertEquals(daysResponse1.get(MON).getNight().getMax(), 3);
     }
 
+
+    @Test
+    public void shouldBeAbleToRemoveBrokerGivenScoreBiggerThanThreshold() {
+        Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
+                newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(2),null)),1);
+
+        shift.removeBroker(1.);
+
+        assertEquals(0, shift.getBrokerV3List().size());
+    }
+
+    @Test
+    public void shouldBeAbleToRemoveBrokerGivenScoreBiggerThanThresholdPutKeepOneBroker() {
+        Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
+                newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(3),null),
+                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),1);
+
+        List<Schedule.BrokerV3> brokerV3s = shift.removeBroker(2.);
+
+        assertEquals(1, shift.getBrokerV3List().size());
+        assertEquals("Harry Potter", shift.getBrokerV3List().get(0).getName());
+        assertEquals("John Due", brokerV3s.get(0).getName());
+        assertEquals(1, brokerV3s.size());
+    }
+
+    @Test
+    public void shouldBeAbleToRemoveBrokerFromScheduleGivenScoreBiggerThanThresholdPutKeepOneBroker() {
+        Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
+                newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(3),null),
+                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),1);
+
+        Schedule.ShiftPlaceV3 sp = new Schedule.ShiftPlaceV3("plantao 1", "id");
+        sp.getDays().get(MON).setMorning(shift);
+        Schedule schedule = new Schedule();
+        schedule.getShiftPlaceV3List().add(sp);
+        List<Schedule.BrokerV3> brokerV3s = schedule.removeAllBrokersForThreshold(2.);
+
+        assertEquals(1, shift.getBrokerV3List().size());
+        assertEquals("Harry Potter", shift.getBrokerV3List().get(0).getName());
+        assertEquals("John Due", brokerV3s.get(0).getName());
+        assertEquals(1, brokerV3s.size());
+    }
 }

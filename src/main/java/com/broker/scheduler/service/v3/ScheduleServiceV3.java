@@ -12,6 +12,7 @@ import com.broker.scheduler.service.v3.score.CalculateScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,17 +21,14 @@ public class ScheduleServiceV3 {
 
     private BrokerClient brokerClient;
     private ShiftPlaceClient shiftPlaceClient;
-    private CalculateScore calculateScore;
-    private ScheduleBuilder scheduleBuilder;
-    private RandomNumber randomNumber;
+    private IterationManager iterationManager;
 
     @Autowired
-    public ScheduleServiceV3(BrokerClient brokerClient, ShiftPlaceClient shiftPlaceClient) {
+    public ScheduleServiceV3(BrokerClient brokerClient, ShiftPlaceClient shiftPlaceClient,
+                             IterationManager iterationManager) {
         this.brokerClient = brokerClient;
         this.shiftPlaceClient = shiftPlaceClient;
-        this.calculateScore = new CalculateScore();
-        this.scheduleBuilder = new ScheduleBuilder();
-        this.randomNumber = new RandomNumber();
+        this.iterationManager = iterationManager;
     }
 
     public Schedules createSchedules(String manager) {
@@ -39,14 +37,14 @@ public class ScheduleServiceV3 {
 
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(shiftPlaces).setBrokers(brokers);
 
-        AlreadyScheduled alreadyScheduled = new AlreadyScheduled();
-        schedule = scheduleBuilder.createSchedule(schedule, alreadyScheduled, randomNumber);
-
-        Schedule scoredSchedule = calculateScore.calculate(schedule);
-
+        try {
+            schedule = iterationManager.iterate(schedule);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Schedules schedules = new Schedules();
         schedules.setSchedule(new ArrayList<>());
-        schedules.getSchedule().add(scoredSchedule);
+        schedules.getSchedule().add(schedule);
         return schedules;
     }
 

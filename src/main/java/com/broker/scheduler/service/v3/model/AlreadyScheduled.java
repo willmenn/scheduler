@@ -77,4 +77,12 @@ public class AlreadyScheduled {
         }
         return dayObject.getMorning();
     }
+
+    public void removeBrokers(List<BrokerV3> brokerV3s) {
+        this.alreadyScheduled.entrySet().forEach(entry -> {
+            entry.getValue().getMorning().removeBrokers(brokerV3s);
+            entry.getValue().getAfternoon().removeBrokers(brokerV3s);
+            entry.getValue().getNight().removeBrokers(brokerV3s);
+        });
+    }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.broker.scheduler.service.v3.model.DayEnum.FRI;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
@@ -27,11 +28,13 @@ import static com.broker.scheduler.service.v3.model.DayEnum.WED;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by wahrons on 29/04/18.
  */
 @Data
+@AllArgsConstructor
 public class Schedule {
     private List<ShiftPlaceV3> shiftPlaceV3List;
     private String managerName;
@@ -39,8 +42,8 @@ public class Schedule {
     private List<BrokerV3> brokerV3s;
     private BigDecimal score;
 
-    public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber){
-        return ArrayUtils.shuffleArray(this.shiftPlaceV3List,randomNumber);
+    public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber) {
+        return ArrayUtils.shuffleArray(this.shiftPlaceV3List, randomNumber);
     }
 
     public Schedule() {
@@ -49,6 +52,8 @@ public class Schedule {
 
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ShiftPlaceV3 {
         private String name;
         private String id;
@@ -70,6 +75,8 @@ public class Schedule {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Day {
         private DayEnum name;
         private Shift morning;
@@ -85,6 +92,7 @@ public class Schedule {
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     @Data
     public static class Shift {
@@ -95,6 +103,24 @@ public class Schedule {
         public Shift(ShiftTimeEnum name) {
             this.brokerV3List = new ArrayList();
             this.name = name;
+        }
+
+        public List<BrokerV3> removeBroker(Double threshold) {
+            List<BrokerV3> newList = this.brokerV3List.stream()
+                    .filter(b -> b.getScore().compareTo(BigDecimal.valueOf(threshold)) < 0)
+                    .collect(toList());
+            List<BrokerV3> removed = this.brokerV3List.stream()
+                    .filter(b -> b.getScore().compareTo(BigDecimal.valueOf(threshold)) >= 0)
+                    .collect(toList());
+            this.brokerV3List = newList;
+            return removed;
+        }
+
+        public void removeBrokers(List<BrokerV3> brokerV3s) {
+            this.brokerV3List = this.brokerV3List.stream()
+                    .filter(brokerV3 -> brokerV3s.stream()
+                            .anyMatch(b -> b.getName().equals(brokerV3.getName())))
+                    .collect(toList());
         }
     }
 
@@ -138,4 +164,14 @@ public class Schedule {
         return this;
     }
 
+    public List<BrokerV3> removeAllBrokersForThreshold(Double threshold) {
+        List<BrokerV3> brokerV3s = new ArrayList<>();
+        this.shiftPlaceV3List.forEach(sp -> sp.getDays().entrySet()
+                .forEach(day -> {
+                    brokerV3s.addAll(day.getValue().morning.removeBroker(threshold));
+                    brokerV3s.addAll(day.getValue().afternoon.removeBroker(threshold));
+                    brokerV3s.addAll(day.getValue().night.removeBroker(threshold));
+                }));
+        return brokerV3s.stream().distinct().collect(toList());
+    }
 }
