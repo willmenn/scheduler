@@ -48,11 +48,18 @@ class BrokerScore {
                                         entry.getKey().getConstraint()
                                                 .apply(string, this)).sum())
                 .sum();
-
-        //TODO: Esta linha nao funciona
+        
         this.score = sum;
-        this.brokerV3.setScore(BigDecimal.valueOf(sum));
+        addScoreToBrokerV3(sum);
         return sum;
+    }
+
+    private void addScoreToBrokerV3(int sum) {
+        if(this.brokerV3.getScore() == null){
+            this.brokerV3.setScore(BigDecimal.valueOf(sum));
+        }else {
+            this.brokerV3.setScore(this.brokerV3.getScore().add(BigDecimal.valueOf(sum)));
+        }
     }
 
     private void addValuesToBrokerScoreMap(Schedule schedule, Map<String, BrokerScore> brokerScore) {
