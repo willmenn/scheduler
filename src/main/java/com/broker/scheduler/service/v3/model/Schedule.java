@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -104,6 +105,7 @@ public class Schedule {
     public static class BrokerV3 {
         private String name;
         private String id;
+        @Setter
         private BigDecimal score;
         private Map<ScoreFunction, List<String>> constraints;
     }

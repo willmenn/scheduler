@@ -138,6 +138,7 @@ public class BrokerScoreTest {
 
         assertEquals(2, score);
         assertEquals(2, brokerScoreMap.get("John due").getScore());
+        assertEquals(2, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
     }
 
     @Test

@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ class BrokerScore {
     private Map<DayEnum, Day> days;
     private Map<ShiftTimeEnum, Shift> shifts;
     private Map<ScoreFunction, List<String>> constraints;
+    private Schedule.BrokerV3 brokerV3;
     private int score;
 
     Map<String, BrokerScore> buildBrokerScoreMap(Schedule schedule) {
@@ -49,6 +51,7 @@ class BrokerScore {
 
         //TODO: Esta linha nao funciona
         this.score = sum;
+        this.brokerV3.setScore(BigDecimal.valueOf(sum));
         return sum;
     }
 
@@ -68,6 +71,7 @@ class BrokerScore {
                 .days(new HashMap<>())
                 .shifts(new HashMap<>())
                 .constraints(broker.getConstraints())
+                .brokerV3(broker)
                 .build()));
         return scores;
     }
