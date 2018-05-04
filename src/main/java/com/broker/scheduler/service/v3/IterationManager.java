@@ -48,7 +48,7 @@ public class IterationManager {
                 lowerScore = cloneSchedule(scoredSchedule);
             } else {
                 double threshold = ThresholdCalculator.average(scoredSchedule.getBrokerV3s());
-
+                //TODO: Clear Broker Score when removing it
                 List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
 
                 alreadyScheduled.removeBrokers(brokerV3s);
