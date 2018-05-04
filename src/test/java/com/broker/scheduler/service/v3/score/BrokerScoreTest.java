@@ -5,7 +5,6 @@ import com.broker.scheduler.service.v3.ScheduleBuilder;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
 import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.FakeRandomNumber;
-import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildOnePlantaoMon345WithOneBroker;
+import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildTwoPlantaoMon1WithOneBroker;
+import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildTwoPlantaoMonTue1WithOneBroker;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
 import static com.broker.scheduler.service.v3.model.DayEnum.TUE;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
@@ -131,7 +132,7 @@ public class BrokerScoreTest {
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
         constraints.put(ScoreFunction.SHIFT_PLACE, newArrayList("n-1"));
 
-        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+        Schedule schedule = buildTwoPlantaoMonTue1WithOneBroker(constraints);
 
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
@@ -151,8 +152,8 @@ public class BrokerScoreTest {
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get("John due").getScore());
+        assertEquals(6, score);
+        assertEquals(6, brokerScoreMap.get("John due").getScore());
     }
 
     @Test
@@ -176,12 +177,28 @@ public class BrokerScoreTest {
         constraints.put(ScoreFunction.PARTIAL_SHIFT_PLACE, newArrayList("n-1"));
         constraints.put(ScoreFunction.PARTIAL_DAY, newArrayList("MON"));
 
-        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+        Schedule schedule = buildTwoPlantaoMonTue1WithOneBroker(constraints);
 
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(3, score);
-        assertEquals(3, brokerScoreMap.get("John due").getScore());
+        assertEquals(4, score);
+        assertEquals(4, brokerScoreMap.get("John due").getScore());
     }
+    @Test
+    public void shouldBeAbleToCalculateScoreGiven2ShiftPlaces() {
+        Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
+        constraints.put(ScoreFunction.SHIFT_PLACE, newArrayList("n-1","n-2"));
+
+        Schedule schedule = buildTwoPlantaoMon1WithOneBroker(constraints);
+
+        Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
+        int score = brokerScoreMap.get("John due").calculateScore();
+
+        assertEquals(6, score);
+        assertEquals(6, brokerScoreMap.get("John due").getScore());
+        assertEquals(6, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
+    }
+
+
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildOnePlantaoMon345WithOneBroker;
+import static com.broker.scheduler.service.v3.helper.ScheduleHelper.buildTwoPlantaoMonTue1WithOneBroker;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
@@ -38,10 +39,10 @@ public class CalculateScoreTest {
         constraints.put(ScoreFunction.PARTIAL_SHIFT_PLACE, newArrayList("n-1"));
         constraints.put(ScoreFunction.PARTIAL_DAY, newArrayList("MON"));
 
-        Schedule schedule = buildOnePlantaoMon345WithOneBroker(constraints);
+        Schedule schedule = buildTwoPlantaoMonTue1WithOneBroker(constraints);
         Schedule scheduledWithScore = calculateScore.calculate(schedule);
 
-        assertEquals(3, scheduledWithScore.getScore().intValue());
+        assertEquals(4, scheduledWithScore.getScore().intValue());
     }
 
     @Test
@@ -67,6 +68,6 @@ public class CalculateScoreTest {
 
         Schedule scheduledWithScore = calculateScore.calculate(scheduleFilled);
 
-        assertEquals(12, scheduledWithScore.getScore().intValue());
+        assertEquals(28, scheduledWithScore.getScore().intValue());
     }
 }

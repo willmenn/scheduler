@@ -25,9 +25,9 @@ import java.util.Map;
 @AllArgsConstructor
 class BrokerScore {
     private String name;
-    private Map<String, ShiftPlaceV3> shiftPlaces;
-    private Map<DayEnum, Day> days;
-    private Map<ShiftTimeEnum, Shift> shifts;
+    private Map<String, Integer> shiftPlaces;
+    private Map<DayEnum, Integer> days;
+    private Map<ShiftTimeEnum, Integer> shifts;
     private Map<ScoreFunction, List<String>> constraints;
     private Schedule.BrokerV3 brokerV3;
     private int score;
@@ -48,16 +48,16 @@ class BrokerScore {
                                         entry.getKey().getConstraint()
                                                 .apply(string, this)).sum())
                 .sum();
-        
+
         this.score = sum;
         addScoreToBrokerV3(sum);
         return sum;
     }
 
     private void addScoreToBrokerV3(int sum) {
-        if(this.brokerV3.getScore() == null){
+        if (this.brokerV3.getScore() == null) {
             this.brokerV3.setScore(BigDecimal.valueOf(sum));
-        }else {
+        } else {
             this.brokerV3.setScore(this.brokerV3.getScore().add(BigDecimal.valueOf(sum)));
         }
     }
@@ -85,21 +85,28 @@ class BrokerScore {
 
     private BrokerScore putShiftPlaces(ShiftPlaceV3 shiftPlaceV3) {
         if (!this.shiftPlaces.containsKey(shiftPlaceV3.getName())) {
-            this.shiftPlaces.put(shiftPlaceV3.getName(), shiftPlaceV3);
+            this.shiftPlaces.put(shiftPlaceV3.getName(), 1);
+        } else {
+            this.shiftPlaces.put(shiftPlaceV3.getName(),
+                    this.shiftPlaces.get(shiftPlaceV3.getName()) + 1);
         }
         return this;
     }
 
     private BrokerScore putDay(Day day) {
         if (!this.days.containsKey(day.getName())) {
-            this.days.put(day.getName(), day);
+            this.days.put(day.getName(), 1);
+        } else {
+            this.days.put(day.getName(), this.days.get(day.getName()) + 1);
         }
         return this;
     }
 
     private BrokerScore putShift(Shift shift) {
         if (!this.shifts.containsKey(shift.getName())) {
-            this.shifts.put(shift.getName(), shift);
+            this.shifts.put(shift.getName(), 1);
+        }else {
+            this.shifts.put(shift.getName(),this.shifts.get(shift.getName()) + 1);
         }
         return this;
     }
