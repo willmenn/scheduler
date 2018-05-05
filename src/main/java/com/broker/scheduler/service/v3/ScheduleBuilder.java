@@ -5,7 +5,10 @@ import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.RandomScheduler;
 import com.broker.scheduler.service.v3.model.Schedule;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import static java.math.BigDecimal.ZERO;
 
 
 /**
@@ -16,7 +19,8 @@ public class ScheduleBuilder {
     public Schedule createSchedule(Schedule schedule,
                                    AlreadyScheduled alreadyScheduled,
                                    RandomScheduler randomNumber) {
-        List<Schedule.BrokerV3> brokerV3List = schedule.getBrokerV3s();
+        List<Schedule.BrokerV3> brokerV3List = getBrokerV3sWithScoreZero(schedule);
+
         schedule.getShiftPlaceV3List(randomNumber).forEach(sp -> {
             sp.getDays().entrySet().forEach(entry -> {
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
@@ -32,6 +36,12 @@ public class ScheduleBuilder {
         });
 
         return schedule;
+    }
+
+    private List<Schedule.BrokerV3> getBrokerV3sWithScoreZero(Schedule schedule) {
+        List<Schedule.BrokerV3> brokerV3List = schedule.getBrokerV3s();
+        brokerV3List.forEach(brokerV3 -> brokerV3.setScore(ZERO));
+        return brokerV3List;
     }
 
     private void addBrokersToShiftTimeOfADay(List<Schedule.BrokerV3> brokerV3List,

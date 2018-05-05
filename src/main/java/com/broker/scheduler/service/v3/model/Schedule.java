@@ -172,6 +172,7 @@ public class Schedule {
                     brokerV3s.addAll(day.getValue().afternoon.removeBroker(threshold));
                     brokerV3s.addAll(day.getValue().night.removeBroker(threshold));
                 }));
+
         return brokerV3s.stream().distinct().collect(toList());
     }
 }

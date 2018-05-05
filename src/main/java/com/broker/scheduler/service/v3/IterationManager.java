@@ -59,7 +59,6 @@ public class IterationManager {
     }
 
     private Schedule cloneSchedule(Schedule scoredSchedule) throws IOException {
-        Schedule lowerScore;
         ObjectMapper objectMapper = new ObjectMapper();
         String scheduleJson = objectMapper.writeValueAsString(scoredSchedule);
         return objectMapper.readValue(scheduleJson, Schedule.class);
