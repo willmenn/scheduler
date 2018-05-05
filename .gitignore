@@ -27,3 +27,5 @@ nbdist/
 out/
 
 */**/.DS_Store
+
+*.csv
