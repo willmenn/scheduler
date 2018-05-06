@@ -4,6 +4,8 @@ import com.broker.scheduler.service.v3.model.Schedule.BrokerV3;
 import com.broker.scheduler.service.v3.model.Schedule.Day;
 import com.broker.scheduler.service.v3.model.Schedule.Shift;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,8 @@ public class AlreadyScheduled {
                         !this.containsBrokerOnDayShift(day, shiftTimeEnum, broker.getName()))
                 .collect(toList());
 
-        return ArrayUtils.shuffleArray(brokersFiltered, randomNumber);
+        Collections.shuffle(brokersFiltered);
+        return brokersFiltered;
     }
 
     public void addBroker(DayEnum day, ShiftTimeEnum shiftName, BrokerV3 broker) {

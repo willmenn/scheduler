@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v3.analytics.DumpLogToCsv;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import com.broker.scheduler.service.v3.score.CalculateScore;
@@ -53,12 +54,12 @@ public class IterationManager {
             logIteration(lowerScore, count, scoredSchedule, threshold);
             if (lowerScore.getScore().intValue() > scoredSchedule.getScore().intValue()) {
                 lowerScore = cloneSchedule(scoredSchedule);
-            } else {
-                //TODO: Clear Broker Score when removing it
-                List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
-
-                alreadyScheduled.removeBrokers(brokerV3s);
             }
+            //TODO: Clear Broker Score when removing it
+            List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
+
+            alreadyScheduled.removeBrokers(brokerV3s);
+
             count++;
         }
         dumpToFile("schedule");
@@ -83,7 +84,7 @@ public class IterationManager {
         if (this.dumpToLocalFile) {
             this.dump.addLine(count,
                     lowerScore.getScore().intValue(),
-                    scoredSchedule.getScore().intValue(),threshold);
+                    scoredSchedule.getScore().intValue(), threshold);
         }
     }
 

@@ -15,9 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.broker.scheduler.service.v3.model.DayEnum.FRI;
@@ -49,7 +52,9 @@ public class Schedule {
     private BigDecimal score;
 
     public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber) {
-        return ArrayUtils.shuffleArray(this.shiftPlaceV3List, randomNumber);
+        // ArrayUtils.shuffleArraySP(this.shiftPlaceV3List, randomNumber);
+        Collections.shuffle(this.shiftPlaceV3List);
+        return this.shiftPlaceV3List;
     }
 
     public Schedule() {
@@ -60,7 +65,7 @@ public class Schedule {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ShiftPlaceV3 {
+    public static class ShiftPlaceV3 implements Comparable<ShiftPlaceV3>{
         private String name;
         private String id;
         private Map<DayEnum, Day> days;
@@ -78,6 +83,10 @@ public class Schedule {
             days.put(SAT, new Day(SAT));
         }
 
+        @Override
+        public int compareTo(ShiftPlaceV3 o) {
+            return o.name.compareTo(this.name);
+        }
     }
 
     @Data
@@ -125,21 +134,40 @@ public class Schedule {
         public void removeBrokers(List<BrokerV3> brokerV3s) {
             this.brokerV3List = this.brokerV3List.stream()
                     .filter(brokerV3 -> brokerV3s.stream()
-                            .anyMatch(b -> b.getName().equals(brokerV3.getName())))
+                            .noneMatch(b -> b.getName().equals(brokerV3.getName())))
                     .collect(toList());
         }
     }
 
+    @Data
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BrokerV3 {
+    public static class BrokerV3 implements Comparable<BrokerV3>{
         private String name;
         private String id;
         @Setter
         private BigDecimal score;
         private Map<ScoreFunction, List<String>> constraints;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BrokerV3 brokerV3 = (BrokerV3) o;
+            return Objects.equals(name, brokerV3.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
+        }
+
+        @Override
+        public int compareTo(BrokerV3 o) {
+            return o.getName().compareTo(this.name);
+        }
     }
 
     public Schedule convertShiftPlaceToSchedule(List<Plantao> shiftPlaces) {
