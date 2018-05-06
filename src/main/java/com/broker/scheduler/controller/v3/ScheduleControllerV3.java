@@ -1,7 +1,7 @@
 package com.broker.scheduler.controller.v3;
 
 import com.broker.scheduler.service.v3.ScheduleServiceV3;
-import com.broker.scheduler.service.v3.model.Schedules;
+import com.broker.scheduler.service.v3.model.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +25,7 @@ public class ScheduleControllerV3 {
     @RequestMapping(method = POST, value = "/schedule",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public Schedules createSchedule(@RequestParam("manager") String manager) {
+    public Schedule createSchedule(@RequestParam("manager") String manager) {
         return serviceV3.createSchedules(manager);
     }
 

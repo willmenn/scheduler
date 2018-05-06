@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,7 +37,10 @@ import static java.util.stream.Collectors.toList;
  */
 @Data
 @AllArgsConstructor
+@Document(collection = "schedulerV3")
 public class Schedule {
+    @Id
+    private String id;
     private List<ShiftPlaceV3> shiftPlaceV3List;
     private String managerName;
     private LocalDateTime createdTimestamp;
