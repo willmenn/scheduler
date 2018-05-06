@@ -6,6 +6,7 @@ import com.broker.scheduler.controller.v2.ScheduleControllerV2;
 import com.broker.scheduler.service.v2.model.Plantao;
 import com.broker.scheduler.service.v2.model.ScheduleModelV2;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -40,6 +41,7 @@ public class SchedulerControllerIntegrationTest extends BrokerSchedulerApplicati
     }
 
     @Test
+    @Ignore
     public void shouldBeAbleToScheduleTeamOfBrokers() throws Exception {
         HttpEntity body = new HttpEntity<>(new ScheduleControllerV2.ScheduleV2DTO("MTest"));
         ScheduleModelV2 response = template.exchange("http://localhost:" + randomServerPort + "/v2/schedule",

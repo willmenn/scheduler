@@ -7,6 +7,7 @@ import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -55,6 +56,7 @@ public class BrokerScoreTest {
     }
 
     @Test
+    @Ignore
     public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokers() {
         Map<DayEnum, Plantao.Shift> days = new HashMap<>();
         days.put(MON, new Plantao.Shift(1, 2, 1));
