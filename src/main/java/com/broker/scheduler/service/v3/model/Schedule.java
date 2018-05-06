@@ -38,6 +38,7 @@ import static java.util.stream.Collectors.toList;
 @Data
 @AllArgsConstructor
 @Document(collection = "schedulerV3")
+@Builder(toBuilder = true)
 public class Schedule {
     @Id
     private String id;

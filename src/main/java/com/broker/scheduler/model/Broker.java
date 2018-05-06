@@ -21,7 +21,6 @@ public class Broker {
     private String brokerId;
     @NonNull
     private String name;
-    @NonNull
     private Preference preference;
 
     private String manager;

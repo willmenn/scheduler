@@ -37,10 +37,10 @@ public class ScheduleServiceV3 {
 
         try {
             schedule = iterationManager.iterate(schedule);
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
         }
-        return repository.save(schedule);
+        return repository.save(schedule.toBuilder().managerName(manager).build());
     }
 
 
