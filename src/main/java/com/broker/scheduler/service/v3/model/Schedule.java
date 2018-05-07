@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static com.broker.scheduler.service.v3.model.DayEnum.FRI;
@@ -50,6 +52,45 @@ public class Schedule {
     private LocalDateTime createdTimestamp;
     private List<BrokerV3> brokerV3s;
     private BigDecimal score;
+    private Map<String, Set<Day>> brokerSchedule;
+
+    public Map<String, Set<Day>> getBrokerSchedule() {
+        Map<String, Set<Day>> brokerMap = new HashMap<>();
+        this.brokerV3s.stream().forEach(brokerV3 -> brokerMap.put(brokerV3.getName(), new TreeSet<>()));
+        brokerMap.forEach((b, days) -> {
+            this.shiftPlaceV3List
+                    .forEach(sp -> sp.getDays().forEach((k, v) -> {
+                        if (v.getMorning().getBrokerV3List().stream().anyMatch(broker -> broker.getName().equals(b))) {
+                            Day day = brokerMap.get(b)
+                                    .stream()
+                                    .filter(d -> d.getName().equals(k))
+                                    .findFirst()
+                                    .orElse(new Day(k));
+                            day.getMorning().getShiftPlaceV3s().add(sp);
+                            brokerMap.get(b).add(day);
+                        }
+                        if (v.getAfternoon().getBrokerV3List().stream().anyMatch(broker -> broker.getName().equals(b))) {
+                            Day day = brokerMap.get(b)
+                                    .stream()
+                                    .filter(d -> d.getName().equals(k))
+                                    .findFirst()
+                                    .orElse(new Day(k));
+                            day.getAfternoon().getShiftPlaceV3s().add(sp);
+                            brokerMap.get(b).add(day);
+                        }
+                        if (v.getNight().getBrokerV3List().stream().anyMatch(broker -> broker.getName().equals(b))) {
+                            Day day = brokerMap.get(b)
+                                    .stream()
+                                    .filter(d -> d.getName().equals(k))
+                                    .findFirst()
+                                    .orElse(new Day(k));
+                            day.getNight().getShiftPlaceV3s().add(sp);
+                            brokerMap.get(b).add(day);
+                        }
+                    }));
+        });
+        return brokerMap;
+    }
 
     public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber) {
         // ArrayUtils.shuffleArraySP(this.shiftPlaceV3List, randomNumber);
@@ -65,7 +106,7 @@ public class Schedule {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ShiftPlaceV3 implements Comparable<ShiftPlaceV3>{
+    public static class ShiftPlaceV3 implements Comparable<ShiftPlaceV3> {
         private String name;
         private String id;
         private Map<DayEnum, Day> days;
@@ -92,7 +133,7 @@ public class Schedule {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Day {
+    public static class Day implements Comparable<Day> {
         private DayEnum name;
         private Shift morning;
         private Shift afternoon;
@@ -104,6 +145,11 @@ public class Schedule {
             this.afternoon = new Shift(AFTERNOON);
             this.night = new Shift(NIGHT);
         }
+
+        @Override
+        public int compareTo(Day o) {
+            return o.getName().name().compareTo(this.name.name());
+        }
     }
 
     @AllArgsConstructor
@@ -113,10 +159,12 @@ public class Schedule {
     public static class Shift {
         private ShiftTimeEnum name;
         private List<BrokerV3> brokerV3List;
+        private List<ShiftPlaceV3> shiftPlaceV3s;
         private int max;
 
         public Shift(ShiftTimeEnum name) {
             this.brokerV3List = new ArrayList();
+            this.shiftPlaceV3s = new ArrayList<>();
             this.name = name;
         }
 
@@ -144,7 +192,7 @@ public class Schedule {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BrokerV3 implements Comparable<BrokerV3>{
+    public static class BrokerV3 implements Comparable<BrokerV3> {
         private String name;
         private String id;
         @Setter
