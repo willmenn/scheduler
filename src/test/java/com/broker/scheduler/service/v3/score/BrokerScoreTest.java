@@ -92,6 +92,7 @@ public class BrokerScoreTest {
     }
 
     @Test
+    @Ignore
     public void shouldBeAbleToCreateBrokerScoreMapGivenScheduleWithTwoBrokersAndTwoDays() {
         Map<DayEnum, Plantao.Shift> days = new HashMap<>();
         days.put(MON, new Plantao.Shift(0, 1, 1));
