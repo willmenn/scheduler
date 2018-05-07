@@ -3,12 +3,14 @@ package com.broker.scheduler.service.v3.model;
 import com.broker.scheduler.service.v3.model.Schedule.BrokerV3;
 import com.broker.scheduler.service.v3.model.Schedule.Day;
 import com.broker.scheduler.service.v3.model.Schedule.Shift;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.broker.scheduler.service.v3.model.DayEnum.FRI;
 import static com.broker.scheduler.service.v3.model.DayEnum.MON;
@@ -20,11 +22,13 @@ import static com.broker.scheduler.service.v3.model.DayEnum.WED;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
 /**
  * Created by wahrons on 29/04/18.
  */
+@Slf4j
 public class AlreadyScheduled {
     Map<DayEnum, Day> alreadyScheduled;
 
@@ -87,5 +91,31 @@ public class AlreadyScheduled {
             entry.getValue().getAfternoon().removeBrokers(brokerV3s);
             entry.getValue().getNight().removeBrokers(brokerV3s);
         });
+    }
+
+    public boolean removeBrokerFromDayShift(BrokerV3 removed, Map.Entry<DayEnum, Day> firstDay, Shift shift) {
+        if (!this.alreadyScheduled.containsKey(firstDay.getKey())) {
+            log.info("Already Schedule -"+ firstDay.getValue().getName().name());
+            return false;
+        }
+
+        Shift s = null;
+        if (shift.getName().equals(MORNING)) {
+            s = this.alreadyScheduled.get(firstDay.getKey())
+                    .getMorning();
+        } else if (shift.getName().equals(AFTERNOON)) {
+            s = this.alreadyScheduled.get(firstDay.getKey())
+                    .getAfternoon();
+        } else if (shift.getName().equals(NIGHT)) {
+            s = this.alreadyScheduled.get(firstDay.getKey())
+                    .getNight();
+        }
+        log.info("Already Schedule -"+s.getName().name());
+        if (s != null) {
+            s.removeBrokers(newArrayList(removed));
+            log.info("Already Schedule 2 -"+s.getName().name());
+            return true;
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package com.broker.scheduler.service.v3;
 
 import com.broker.scheduler.service.v3.analytics.DumpLogToCsv;
 import com.broker.scheduler.service.v3.model.AlreadyScheduled;
+import com.broker.scheduler.service.v3.model.DayEnum;
 import com.broker.scheduler.service.v3.model.FakeRandomNumber;
 import com.broker.scheduler.service.v3.model.RandomNumber;
 import com.broker.scheduler.service.v3.model.Schedule;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -59,11 +62,41 @@ public class IterationManager {
             List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
 
             alreadyScheduled.removeBrokers(brokerV3s);
-
+            mutate(scoredSchedule, alreadyScheduled, randomNumber);
             count++;
         }
         dumpToFile("schedule");
         return lowerScore;
+    }
+
+    private void mutate(Schedule schedule, AlreadyScheduled alreadyScheduled, RandomNumber randomNumber) {
+        boolean mutate = false;
+        int count=0;
+        while (count != 20) {
+            Map<DayEnum, Schedule.Day> days = schedule.getShiftPlaceV3List()
+                    .stream().findFirst().get().getDays();
+            Optional<Map.Entry<DayEnum, Schedule.Day>> firstDay = days.entrySet().stream().findFirst();
+            int randomInt = randomNumber.getRandomInt(3)+1;
+            Schedule.Shift shift = null;
+            log.info("" + randomInt);
+            if (randomInt == 1) {
+                shift = firstDay.get().getValue().getMorning();
+            } else if (randomInt == 2) {
+                shift = firstDay.get().getValue().getAfternoon();
+            } else if (randomInt == 3) {
+                shift = firstDay.get().getValue().getNight();
+            }
+            log.info(firstDay.toString());
+            if (shift != null && shift.getBrokerV3List() != null && shift.getBrokerV3List().size() > 0) {
+                log.info(shift.getName().name());
+                Schedule.BrokerV3 removed = shift.getBrokerV3List()
+                        .remove(randomNumber.getRandomInt(shift.getBrokerV3List().size()));
+                mutate = alreadyScheduled.removeBrokerFromDayShift(removed, firstDay.get(), shift);
+                log.info("MUTATE - " + mutate);
+            }
+            count++;
+        }
+        log.info("MUTATE - " + mutate);
     }
 
     private void clearDumpCollection() {
