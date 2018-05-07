@@ -68,7 +68,7 @@ public class ScheduleTest {
     @Test
     public void shouldBeAbleToRemoveBrokerGivenScoreBiggerThanThreshold() {
         Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
-                newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(2),null)),1);
+                newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(2),null)), null,1);
 
         shift.removeBroker(1.);
 
@@ -79,7 +79,7 @@ public class ScheduleTest {
     public void shouldBeAbleToRemoveBrokerGivenScoreBiggerThanThresholdPutKeepOneBroker() {
         Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
                 newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(3),null),
-                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),1);
+                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),null,1);
 
         List<Schedule.BrokerV3> brokerV3s = shift.removeBroker(2.);
 
@@ -93,7 +93,7 @@ public class ScheduleTest {
     public void shouldBeAbleToRemoveBrokerFromScheduleGivenScoreBiggerThanThresholdPutKeepOneBroker() {
         Schedule.Shift shift = new Schedule.Shift(ShiftTimeEnum.MORNING,
                 newArrayList(new Schedule.BrokerV3("John Due","id",BigDecimal.valueOf(3),null),
-                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),1);
+                        new Schedule.BrokerV3("Harry Potter","id",BigDecimal.valueOf(1),null)),null,1);
 
         Schedule.ShiftPlaceV3 sp = new Schedule.ShiftPlaceV3("plantao 1", "id");
         sp.getDays().get(MON).setMorning(shift);
