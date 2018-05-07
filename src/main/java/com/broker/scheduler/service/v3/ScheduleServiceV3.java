@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -37,10 +40,12 @@ public class ScheduleServiceV3 {
 
         try {
             schedule = iterationManager.iterate(schedule);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return repository.save(schedule.toBuilder().managerName(manager).build());
+        return repository.save(schedule.toBuilder().managerName(manager)
+                .createdTimestamp(LocalDateTime.now(Clock.system(ZoneId.of("America/Sao_Paulo"))))
+                .build());
     }
 
 

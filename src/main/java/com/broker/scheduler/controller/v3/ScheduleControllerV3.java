@@ -4,6 +4,7 @@ import com.broker.scheduler.repository.ScheduleV3Repository;
 import com.broker.scheduler.service.v3.ScheduleServiceV3;
 import com.broker.scheduler.service.v3.model.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +46,6 @@ public class ScheduleControllerV3 {
     @RequestMapping(method = GET, value = "/schedules/manager/{manager}",
             produces = APPLICATION_JSON_VALUE)
     public List<Schedule> fetchSchedulesByManager(@PathVariable("manager") String manager) {
-        return repository.findAllByManagerName(manager);
+        return repository.findByManagerNameOrderByCreatedTimestamp(manager, new PageRequest(0,10));
     }
 }
