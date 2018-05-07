@@ -29,6 +29,7 @@ public class Broker {
 
     private Map<ScoreFunction, List<String>> constraints;
 
+    private String qtdConstraints;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
