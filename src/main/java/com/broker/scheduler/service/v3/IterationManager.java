@@ -53,7 +53,7 @@ public class IterationManager {
             if (lowerScore == null) {
                 lowerScore = cloneSchedule(scoredSchedule);
             }
-            double threshold = ThresholdCalculator.standarDeviation(scoredSchedule.getBrokerV3s());
+            double threshold = ThresholdCalculator.average(scoredSchedule.getBrokerV3s());
             logIteration(lowerScore, count, scoredSchedule, threshold);
             if (lowerScore.getScore().intValue() > scoredSchedule.getScore().intValue()) {
                 lowerScore = cloneSchedule(scoredSchedule);
