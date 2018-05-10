@@ -47,6 +47,7 @@ import static java.util.stream.Collectors.toList;
 public class Schedule {
     @Id
     private String id;
+    private String name;
     private List<ShiftPlaceV3> shiftPlaceV3List;
     private String managerName;
     private LocalDateTime createdTimestamp;

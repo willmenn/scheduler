@@ -46,6 +46,16 @@ public class ScheduleControllerV3 {
     @RequestMapping(method = GET, value = "/schedules/manager/{manager}",
             produces = APPLICATION_JSON_VALUE)
     public List<Schedule> fetchSchedulesByManager(@PathVariable("manager") String manager) {
-        return repository.findByManagerNameOrderByCreatedTimestamp(manager, new PageRequest(0,10));
+        return repository.findByManagerNameOrderByCreatedTimestamp(manager, new PageRequest(0, 10));
     }
+
+    @RequestMapping(method = POST, value = "/schedules/{id}",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public void addNameToSchedule(@RequestParam("name") String name, @PathVariable("id") String id) {
+        Schedule schedule = repository.findOne(id);
+        schedule.setName(name);
+        repository.save(schedule);
+    }
+
 }
