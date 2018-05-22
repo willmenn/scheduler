@@ -62,7 +62,7 @@ public class IterationManager {
             List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
 
             alreadyScheduled.removeBrokers(brokerV3s);
-            mutate(scoredSchedule, alreadyScheduled, randomNumber);
+          //  mutate(scoredSchedule, alreadyScheduled, randomNumber);
             count++;
         }
         dumpToFile("schedule");

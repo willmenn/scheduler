@@ -52,7 +52,8 @@ public class ScheduleBuilder {
         List<Schedule.BrokerV3> brokersFree = alreadyScheduled.getUpdatedBrokerList(dayEnum,
                 shift.getName(), brokerV3List, randomNumber, sp);
         int count = 0;
-        int max = shift.getMax() <= (brokersFree.size()) ? shift.getMax() : (brokersFree.size());
+        int maxAvailable = shift.getMax() - shift.getBrokerV3List().size();
+        int max = maxAvailable <= (brokersFree.size()) ? maxAvailable : (brokersFree.size());
         while (max > count) {
             shift.getBrokerV3List().add(brokersFree.get(count));
             alreadyScheduled.addBroker(dayEnum, shift.getName(), brokersFree.get(count));
