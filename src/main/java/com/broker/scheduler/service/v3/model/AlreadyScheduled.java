@@ -63,15 +63,15 @@ public class AlreadyScheduled {
                 .filter(broker ->
                         !this.containsBrokerOnDayShift(day, shiftTimeEnum, broker.getName()))
                 .filter(broker -> broker.getConstraints() == null || (broker.getConstraints() != null &&
-                        broker.getConstraints().getOrDefault(DAY, newArrayList()).stream()
+                        broker.getConstraints().getOrDefault(DAY, newArrayList("NONE")).stream()
                         .noneMatch(d -> d.equals(day.name()))))
                 .filter(broker -> broker.getConstraints() == null ||
                         (broker.getConstraints() != null && broker.getConstraints()
-                        .getOrDefault(SHIFT, newArrayList()).stream()
+                        .getOrDefault(SHIFT, newArrayList("NONE")).stream()
                         .noneMatch(s -> s.equals(shiftTimeEnum.name()))))
                 .filter(broker -> broker.getConstraints() == null ||
                         (broker.getConstraints() != null &&
-                        broker.getConstraints().getOrDefault(SHIFT_PLACE, newArrayList())
+                        broker.getConstraints().getOrDefault(SHIFT_PLACE, newArrayList("NONE"))
                         .stream().noneMatch(s -> s.equals(sp.getName()))))
                 .collect(toList());
 
