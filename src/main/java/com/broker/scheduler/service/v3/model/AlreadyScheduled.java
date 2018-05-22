@@ -3,6 +3,7 @@ package com.broker.scheduler.service.v3.model;
 import com.broker.scheduler.service.v3.model.Schedule.BrokerV3;
 import com.broker.scheduler.service.v3.model.Schedule.Day;
 import com.broker.scheduler.service.v3.model.Schedule.Shift;
+import com.broker.scheduler.service.v3.score.ScoreFunction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -22,6 +23,9 @@ import static com.broker.scheduler.service.v3.model.DayEnum.WED;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
+import static com.broker.scheduler.service.v3.score.ScoreFunction.DAY;
+import static com.broker.scheduler.service.v3.score.ScoreFunction.SHIFT;
+import static com.broker.scheduler.service.v3.score.ScoreFunction.SHIFT_PLACE;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
@@ -53,10 +57,22 @@ public class AlreadyScheduled {
     public List<BrokerV3> getUpdatedBrokerList(DayEnum day,
                                                ShiftTimeEnum shiftTimeEnum,
                                                List<BrokerV3> brokers,
-                                               RandomScheduler randomNumber) {
+                                               RandomScheduler randomNumber,
+                                               Schedule.ShiftPlaceV3 sp) {
         List<BrokerV3> brokersFiltered = brokers.stream()
                 .filter(broker ->
                         !this.containsBrokerOnDayShift(day, shiftTimeEnum, broker.getName()))
+                .filter(broker -> broker.getConstraints() == null || (broker.getConstraints() != null &&
+                        broker.getConstraints().getOrDefault(DAY, newArrayList()).stream()
+                        .noneMatch(d -> d.equals(day.name()))))
+                .filter(broker -> broker.getConstraints() == null ||
+                        (broker.getConstraints() != null && broker.getConstraints()
+                        .getOrDefault(SHIFT, newArrayList()).stream()
+                        .noneMatch(s -> s.equals(shiftTimeEnum.name()))))
+                .filter(broker -> broker.getConstraints() == null ||
+                        (broker.getConstraints() != null &&
+                        broker.getConstraints().getOrDefault(SHIFT_PLACE, newArrayList())
+                        .stream().noneMatch(s -> s.equals(sp.getName()))))
                 .collect(toList());
 
         Collections.shuffle(brokersFiltered);
@@ -95,7 +111,7 @@ public class AlreadyScheduled {
 
     public boolean removeBrokerFromDayShift(BrokerV3 removed, Map.Entry<DayEnum, Day> firstDay, Shift shift) {
         if (!this.alreadyScheduled.containsKey(firstDay.getKey())) {
-            log.info("Already Schedule -"+ firstDay.getValue().getName().name());
+            log.info("Already Schedule -" + firstDay.getValue().getName().name());
             return false;
         }
 

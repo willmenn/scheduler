@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 /**
  * Created by wahrons on 30/04/18.
  */
-@Getter(AccessLevel.PACKAGE)
+@Getter(AccessLevel.PUBLIC)
 public enum ScoreFunction {
 
     SHIFT_PLACE((name, brokerScore) -> brokerScore.getShiftPlaces().containsKey(name)

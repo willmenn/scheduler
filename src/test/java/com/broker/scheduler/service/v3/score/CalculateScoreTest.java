@@ -55,9 +55,9 @@ public class CalculateScoreTest {
         Schedule schedule = new Schedule().convertShiftPlaceToSchedule(newArrayList(plantao));
 
         Map<ScoreFunction, List<String>> constraints = new HashMap<>(1);
-        constraints.put(ScoreFunction.SHIFT, newArrayList("MORNING"));
-        constraints.put(ScoreFunction.SHIFT_PLACE, newArrayList("n-1"));
-        constraints.put(ScoreFunction.DAY, newArrayList("MON"));
+        constraints.put(ScoreFunction.PARTIAL_SHIFT, newArrayList("MORNING"));
+        constraints.put(ScoreFunction.PARTIAL_SHIFT_PLACE, newArrayList("n-1"));
+        constraints.put(ScoreFunction.PARTIAL_DAY, newArrayList("MON"));
         String brokerName = "John due";
         Schedule.BrokerV3 brokerV3 = new Schedule.BrokerV3(brokerName, "1", null, constraints);
         String harryPotter = "Harry Potter";
@@ -68,6 +68,6 @@ public class CalculateScoreTest {
 
         Schedule scheduledWithScore = calculateScore.calculate(scheduleFilled);
 
-        assertEquals(28, scheduledWithScore.getScore().intValue());
+        assertEquals(14, scheduledWithScore.getScore().intValue());
     }
 }

@@ -140,9 +140,9 @@ public class BrokerScoreTest {
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get("John due").getScore());
-        assertEquals(2, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
+        assertEquals(0, score);
+        assertEquals(0, brokerScoreMap.get("John due").getScore());
+        assertEquals(0, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
     }
 
     @Test
@@ -155,8 +155,8 @@ public class BrokerScoreTest {
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(6, score);
-        assertEquals(6, brokerScoreMap.get("John due").getScore());
+        assertEquals(0, score);
+        assertEquals(0, brokerScoreMap.get("John due").getScore());
     }
 
     @Test
@@ -168,8 +168,8 @@ public class BrokerScoreTest {
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(2, score);
-        assertEquals(2, brokerScoreMap.get("John due").getScore());
+        assertEquals(0, score);
+        assertEquals(0, brokerScoreMap.get("John due").getScore());
     }
 
 
@@ -198,9 +198,9 @@ public class BrokerScoreTest {
         Map<String, BrokerScore> brokerScoreMap = new BrokerScore().buildBrokerScoreMap(schedule);
         int score = brokerScoreMap.get("John due").calculateScore();
 
-        assertEquals(6, score);
-        assertEquals(6, brokerScoreMap.get("John due").getScore());
-        assertEquals(6, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
+        assertEquals(0, score);
+        assertEquals(0, brokerScoreMap.get("John due").getScore());
+        assertEquals(0, brokerScoreMap.get("John due").getBrokerV3().getScore().intValue());
     }
 
 

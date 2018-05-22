@@ -25,13 +25,13 @@ public class ScheduleBuilder {
             sp.getDays().entrySet().forEach(entry -> {
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
                         entry.getValue().getName(), entry.getValue().getMorning(),
-                        randomNumber);
+                        randomNumber,sp);
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
                         entry.getValue().getName(), entry.getValue().getAfternoon(),
-                        randomNumber);
+                        randomNumber,sp);
                 addBrokersToShiftTimeOfADay(brokerV3List, alreadyScheduled,
                         entry.getValue().getName(), entry.getValue().getNight(),
-                        randomNumber);
+                        randomNumber,sp);
             });
         });
 
@@ -47,9 +47,10 @@ public class ScheduleBuilder {
     private void addBrokersToShiftTimeOfADay(List<Schedule.BrokerV3> brokerV3List,
                                              AlreadyScheduled alreadyScheduled,
                                              DayEnum dayEnum,
-                                             Schedule.Shift shift, RandomScheduler randomNumber) {
+                                             Schedule.Shift shift, RandomScheduler randomNumber,
+                                             Schedule.ShiftPlaceV3 sp) {
         List<Schedule.BrokerV3> brokersFree = alreadyScheduled.getUpdatedBrokerList(dayEnum,
-                shift.getName(), brokerV3List, randomNumber);
+                shift.getName(), brokerV3List, randomNumber, sp);
         int count = 0;
         int max = shift.getMax() <= (brokersFree.size()) ? shift.getMax() : (brokersFree.size());
         while (max > count) {
