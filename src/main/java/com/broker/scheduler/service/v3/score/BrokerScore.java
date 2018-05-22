@@ -41,6 +41,9 @@ class BrokerScore {
     }
 
     int calculateScore() {
+       if(this.constraints == null) {
+           return 0;
+       }
         int sum = this.constraints.entrySet().stream()
                 .mapToInt((entry) ->
                         entry.getValue().stream()
