@@ -139,12 +139,20 @@ public class Schedule {
         private Shift morning;
         private Shift afternoon;
         private Shift night;
+        private int placeLeftCount;
 
         public Day(DayEnum name) {
             this.name = name;
             this.morning = new Shift(MORNING);
             this.afternoon = new Shift(AFTERNOON);
             this.night = new Shift(NIGHT);
+        }
+
+        public int getPlaceLeftCount(){
+            int morningCount = this.morning.getMax() - this.morning.getBrokerV3List().size();
+            int afternoonCount = this.afternoon.getMax() - this.afternoon.getBrokerV3List().size();
+            int nightCount = this.night.getMax() - this.night.getBrokerV3List().size();
+            return morningCount + afternoonCount + nightCount;
         }
 
         @Override
