@@ -36,6 +36,7 @@ import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by wahrons on 29/04/18.
@@ -54,6 +55,33 @@ public class Schedule {
     private List<BrokerV3> brokerV3s;
     private BigDecimal score;
     private Map<String, Set<Day>> brokerSchedule;
+    private Map<String, Integer> brokerScheduleCount;
+    private int max;
+    private int placesLeft;
+    private double standardDeviationOfBrokersDistribution;
+
+    public int getMax() {
+        return this.shiftPlaceV3List.stream().mapToInt(sp ->
+                sp.getDays()
+                        .entrySet().stream()
+                        .mapToInt(entry -> entry.getValue().getMax()).sum()).sum();
+    }
+
+    public int getPlacesLeft(){
+        return this.getShiftPlaceV3List().stream()
+                .mapToInt(sp -> sp.getDays().values()
+                        .stream().mapToInt(Day::getPlaceLeftCount).sum())
+                .sum();
+    }
+
+    public double getStandardDeviationOfBrokersDistribution(){
+        double average = this.getBrokerScheduleCount().values()
+                .stream()
+                .mapToInt(i -> i)
+                .summaryStatistics().getAverage();
+
+        return Math.sqrt(average);
+    }
 
     public Map<String, Set<Day>> getBrokerSchedule() {
         Map<String, Set<Day>> brokerMap = new HashMap<>();
@@ -61,7 +89,8 @@ public class Schedule {
         brokerMap.forEach((b, days) -> {
             this.shiftPlaceV3List
                     .forEach(sp -> sp.getDays().forEach((k, v) -> {
-                        if (v.getMorning().getBrokerV3List().stream().anyMatch(broker -> broker.getName().equals(b))) {
+                        if (v.getMorning().getBrokerV3List().stream()
+                                .anyMatch(broker -> broker.getName().equals(b))) {
                             Day day = brokerMap.get(b)
                                     .stream()
                                     .filter(d -> d.getName().equals(k))
@@ -93,6 +122,11 @@ public class Schedule {
         return brokerMap;
     }
 
+    public Map<String, Integer> getBrokerScheduleCount(){
+        return this.getBrokerSchedule().entrySet().stream()
+                .collect(toMap(Map.Entry::getKey,
+                        e->e.getValue().stream().mapToInt(Day::getBrokerCount).sum()));
+    }
     public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber) {
         // ArrayUtils.shuffleArraySP(this.shiftPlaceV3List, randomNumber);
         Collections.shuffle(this.shiftPlaceV3List);
@@ -140,6 +174,8 @@ public class Schedule {
         private Shift afternoon;
         private Shift night;
         private int placeLeftCount;
+        private int max;
+        private int brokerCount;
 
         public Day(DayEnum name) {
             this.name = name;
@@ -148,11 +184,21 @@ public class Schedule {
             this.night = new Shift(NIGHT);
         }
 
-        public int getPlaceLeftCount(){
+        public int getPlaceLeftCount() {
             int morningCount = this.morning.getMax() - this.morning.getBrokerV3List().size();
             int afternoonCount = this.afternoon.getMax() - this.afternoon.getBrokerV3List().size();
             int nightCount = this.night.getMax() - this.night.getBrokerV3List().size();
             return morningCount + afternoonCount + nightCount;
+        }
+
+        public int getMax() {
+            return this.morning.getMax() + this.afternoon.getMax() + this.night.getMax();
+        }
+
+        public int getBrokerCount(){
+            return this.morning.getShiftPlaceV3s().size()
+                    + this.afternoon.getShiftPlaceV3s().size()
+                    + this.night.getShiftPlaceV3s().size();
         }
 
         @Override

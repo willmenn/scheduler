@@ -55,7 +55,9 @@ public class IterationManager {
             }
             double threshold = ThresholdCalculator.average(scoredSchedule.getBrokerV3s());
             logIteration(lowerScore, count, scoredSchedule, threshold);
-            if (lowerScore.getScore().intValue() > scoredSchedule.getScore().intValue()) {
+            if (lowerScore.getScore().intValue() > scoredSchedule.getScore().intValue()
+                    || (lowerScore.getScore().intValue() == scoredSchedule.getScore().intValue()
+            && lowerScore.getStandardDeviationOfBrokersDistribution() > scoredSchedule.getStandardDeviationOfBrokersDistribution())) {
                 lowerScore = cloneSchedule(scoredSchedule);
             }
             //TODO: Clear Broker Score when removing it
