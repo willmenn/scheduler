@@ -111,7 +111,7 @@ public class AlreadyScheduled {
 
     public boolean removeBrokerFromDayShift(BrokerV3 removed, Map.Entry<DayEnum, Day> firstDay, Shift shift) {
         if (!this.alreadyScheduled.containsKey(firstDay.getKey())) {
-            log.info("Already Schedule -" + firstDay.getValue().getName().name());
+        //    log.info("Already Schedule -" + firstDay.getValue().getName().name());
             return false;
         }
 
@@ -126,10 +126,10 @@ public class AlreadyScheduled {
             s = this.alreadyScheduled.get(firstDay.getKey())
                     .getNight();
         }
-        log.info("Already Schedule -"+s.getName().name());
+        //log.info("Already Schedule -"+s.getName().name());
         if (s != null) {
             s.removeBrokers(newArrayList(removed));
-            log.info("Already Schedule 2 -"+s.getName().name());
+       //     log.info("Already Schedule 2 -"+s.getName().name());
             return true;
         }
         return false;

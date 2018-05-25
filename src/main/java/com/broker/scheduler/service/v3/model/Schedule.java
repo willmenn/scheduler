@@ -35,6 +35,9 @@ import static com.broker.scheduler.service.v3.model.DayEnum.WED;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.AFTERNOON;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.MORNING;
 import static com.broker.scheduler.service.v3.model.ShiftTimeEnum.NIGHT;
+import static java.math.BigDecimal.ROUND_FLOOR;
+import static java.math.BigDecimal.ROUND_HALF_UP;
+import static java.math.BigDecimal.valueOf;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -67,20 +70,26 @@ public class Schedule {
                         .mapToInt(entry -> entry.getValue().getMax()).sum()).sum();
     }
 
-    public int getPlacesLeft(){
+    public int getPlacesLeft() {
         return this.getShiftPlaceV3List().stream()
                 .mapToInt(sp -> sp.getDays().values()
                         .stream().mapToInt(Day::getPlaceLeftCount).sum())
                 .sum();
     }
 
-    public double getStandardDeviationOfBrokersDistribution(){
+    public double getStandardDeviationOfBrokersDistribution() {
         double average = this.getBrokerScheduleCount().values()
                 .stream()
                 .mapToInt(i -> i)
                 .summaryStatistics().getAverage();
 
-        return Math.sqrt(average);
+        double squareOfValueMinusAverage = this.getBrokerScheduleCount().values()
+                .stream()
+                .mapToDouble(i -> Math.pow(i - average, 2))
+                .sum();
+
+        double variance =  squareOfValueMinusAverage/this.getBrokerV3s().size();
+        return Math.sqrt(variance);
     }
 
     public Map<String, Set<Day>> getBrokerSchedule() {
@@ -122,11 +131,12 @@ public class Schedule {
         return brokerMap;
     }
 
-    public Map<String, Integer> getBrokerScheduleCount(){
+    public Map<String, Integer> getBrokerScheduleCount() {
         return this.getBrokerSchedule().entrySet().stream()
                 .collect(toMap(Map.Entry::getKey,
-                        e->e.getValue().stream().mapToInt(Day::getBrokerCount).sum()));
+                        e -> e.getValue().stream().mapToInt(Day::getBrokerCount).sum()));
     }
+
     public List<ShiftPlaceV3> getShiftPlaceV3List(RandomScheduler randomNumber) {
         // ArrayUtils.shuffleArraySP(this.shiftPlaceV3List, randomNumber);
         Collections.shuffle(this.shiftPlaceV3List);
@@ -195,7 +205,7 @@ public class Schedule {
             return this.morning.getMax() + this.afternoon.getMax() + this.night.getMax();
         }
 
-        public int getBrokerCount(){
+        public int getBrokerCount() {
             return this.morning.getShiftPlaceV3s().size()
                     + this.afternoon.getShiftPlaceV3s().size()
                     + this.night.getShiftPlaceV3s().size();
@@ -225,10 +235,10 @@ public class Schedule {
 
         public List<BrokerV3> removeBroker(Double threshold) {
             List<BrokerV3> newList = this.brokerV3List.stream()
-                    .filter(b -> b.getScore().compareTo(BigDecimal.valueOf(threshold)) < 0)
+                    .filter(b -> b.getScore().compareTo(valueOf(threshold)) < 0)
                     .collect(toList());
             List<BrokerV3> removed = this.brokerV3List.stream()
-                    .filter(b -> b.getScore().compareTo(BigDecimal.valueOf(threshold)) >= 0)
+                    .filter(b -> b.getScore().compareTo(valueOf(threshold)) >= 0)
                     .collect(toList());
             this.brokerV3List = newList;
             return removed;

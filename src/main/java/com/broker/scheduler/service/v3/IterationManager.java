@@ -14,9 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.math.BigDecimal.valueOf;
 
 @Component
 @Slf4j
@@ -25,7 +28,7 @@ public class IterationManager {
     private static final int NUMBERS_OF_ITERATION = 5000;
     private final CalculateScore calculateScore;
     private final ScheduleBuilder scheduleBuilder;
-    private final AlreadyScheduled alreadyScheduled;
+    private AlreadyScheduled alreadyScheduled;
     private final RandomNumber randomNumber;
     private final DumpLogToCsv dump;
     private boolean dumpToLocalFile;
@@ -35,13 +38,12 @@ public class IterationManager {
         this.dumpToLocalFile = dumpToLocalFile;
         this.calculateScore = new CalculateScore();
         this.scheduleBuilder = new ScheduleBuilder();
-        this.alreadyScheduled = new AlreadyScheduled();
         this.randomNumber = new RandomNumber();
         this.dump = new DumpLogToCsv();
     }
 
     public Schedule iterate(Schedule schedule) throws IOException {
-
+        alreadyScheduled = new AlreadyScheduled();
         Schedule lowerScore = null;
         clearDumpCollection();
         int count = 0;
@@ -55,16 +57,27 @@ public class IterationManager {
             }
             double threshold = ThresholdCalculator.average(scoredSchedule.getBrokerV3s());
             logIteration(lowerScore, count, scoredSchedule, threshold);
-            if (lowerScore.getScore().intValue() > scoredSchedule.getScore().intValue()
-                    || (lowerScore.getScore().intValue() == scoredSchedule.getScore().intValue()
-            && lowerScore.getStandardDeviationOfBrokersDistribution() > scoredSchedule.getStandardDeviationOfBrokersDistribution())) {
+            if (lowerScore.getScore().intValue() == scoredSchedule.getScore().intValue()) {
+                log.info("StandardDeviation: {} - {}",
+                        lowerScore.getStandardDeviationOfBrokersDistribution(),
+                        scoredSchedule.getStandardDeviationOfBrokersDistribution());
+            }
+            if (lowerScore.getScore().compareTo(scoredSchedule.getScore()) > 0
+                    || (lowerScore.getScore().compareTo(scoredSchedule.getScore()) == 0
+                    && valueOf(lowerScore.getStandardDeviationOfBrokersDistribution())
+                    .compareTo(valueOf(scoredSchedule.getStandardDeviationOfBrokersDistribution())) > 0)) {
+                if (lowerScore.getScore().intValue() == scoredSchedule.getScore().intValue()) {
+                    log.info("StandardDeviation: {} - {}",
+                            lowerScore.getStandardDeviationOfBrokersDistribution(),
+                            scoredSchedule.getStandardDeviationOfBrokersDistribution());
+                }
                 lowerScore = cloneSchedule(scoredSchedule);
             }
             //TODO: Clear Broker Score when removing it
             List<Schedule.BrokerV3> brokerV3s = scoredSchedule.removeAllBrokersForThreshold(threshold);
 
             alreadyScheduled.removeBrokers(brokerV3s);
-          //  mutate(scoredSchedule, alreadyScheduled, randomNumber);
+            mutate(scoredSchedule, alreadyScheduled, randomNumber);
             count++;
         }
         dumpToFile("schedule");
@@ -73,14 +86,14 @@ public class IterationManager {
 
     private void mutate(Schedule schedule, AlreadyScheduled alreadyScheduled, RandomNumber randomNumber) {
         boolean mutate = false;
-        int count=0;
+        int count = 0;
         while (count != 20) {
             Map<DayEnum, Schedule.Day> days = schedule.getShiftPlaceV3List()
                     .stream().findFirst().get().getDays();
             Optional<Map.Entry<DayEnum, Schedule.Day>> firstDay = days.entrySet().stream().findFirst();
-            int randomInt = randomNumber.getRandomInt(3)+1;
+            int randomInt = randomNumber.getRandomInt(3) + 1;
             Schedule.Shift shift = null;
-            log.info("" + randomInt);
+            // log.info("" + randomInt);
             if (randomInt == 1) {
                 shift = firstDay.get().getValue().getMorning();
             } else if (randomInt == 2) {
@@ -88,7 +101,7 @@ public class IterationManager {
             } else if (randomInt == 3) {
                 shift = firstDay.get().getValue().getNight();
             }
-            log.info(firstDay.toString());
+            //log.info(firstDay.toString());
             if (shift != null && shift.getBrokerV3List() != null && shift.getBrokerV3List().size() > 0) {
                 log.info(shift.getName().name());
                 Schedule.BrokerV3 removed = shift.getBrokerV3List()
